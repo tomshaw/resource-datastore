@@ -89,7 +89,7 @@ class ResourceTable
         
         $select->where->equalTo('resource.parent_id', 0);
         
-        $select->where->or->equalTo('resource.status', ResourceModel::LINK_STATUS_CATEGORY);
+        $select->where->or->equalTo('resource.node_type', ResourceModel::NODE_TYPE_CATEGORY);
         
         $select->order('resource.title ASC');
         
@@ -107,6 +107,11 @@ class ResourceTable
         return $data;
     }
     
+    /**
+     * Terminal string.
+     * 
+     * SELECT CONCAT(REPEAT(' - ', (COUNT(parent.title) - 1)), node.title) AS name FROM resource AS node, resource AS parent WHERE node.left_id BETWEEN parent.left_id AND parent.right_id GROUP BY node.title ORDER BY node.left_id;
+     */
     public function fetchIndented()
     {
         $sql = "SELECT CONCAT(REPEAT(' - ', (COUNT(parent.title) - 1)), node.title) AS name
@@ -130,7 +135,16 @@ class ResourceTable
         
         $select->where->notEqualTo('resource.parent_id', 0);
         
-        $select->where->notEqualTo('resource.status', ResourceModel::LINK_STATUS_CATEGORY);
+        $select->where->notEqualTo('resource.node_type', ResourceModel::NODE_TYPE_CATEGORY);
+        
+        if (isset($data['id_from']) && !empty($data['id_from']) && isset($data['id_to']) && !empty($data['id_to'])) {
+            $select->where->greaterThanOrEqualTo('resource.id', $data['id_from']);
+            $select->where->lessThanOrEqualTo('resource.id', $data['id_to']);
+        } else if (isset($data['id_from']) && !empty($data['id_from'])) {
+            $select->where->greaterThanOrEqualTo('resource.id', $data['id_from']);
+        } else if (isset($data['id_to']) && !empty($data['id_to'])) {
+            $select->where->lessThanOrEqualTo('resource.id', $data['id_to']);
+        }
         
         if (isset($data['title']) && !empty($data['title'])) {
             $select->where->literal('LOWER(resource.title) LIKE "%'.strtolower($data['title']).'%"')->or->literal('LOWER(resource.description) LIKE "%'.strtolower($data['title']).'%"');
@@ -171,7 +185,7 @@ class ResourceTable
         
         $select->where->equalTo('resource.parent_id', intval($parentId));
         
-        $select->order('resource.status ASC');
+        $select->order('resource.node_type ASC');
         
         $statement = $sql->prepareStatementForSqlObject($select);
         

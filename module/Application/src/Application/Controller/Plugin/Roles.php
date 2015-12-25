@@ -5,7 +5,7 @@ namespace Application\Controller\Plugin;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Application\Controller\Plugin\AccessControl;
 
-class Acl extends AbstractPlugin
+class Roles extends AbstractPlugin
 {
     protected $roles = array();
     

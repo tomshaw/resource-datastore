@@ -13,6 +13,8 @@
   <li> <a href="/admin/resource/edit/id/<?php echo $this->id ?>/parent_id/<?php echo $this->parent_id ?>"><?php echo $row->title ?></a> </li>
 </ul>
 
+<?php echo $this->partial('admin/messages'); ?>
+
 <div class="row">
   <div class="col-md-12">
     <div class="portlet box">
@@ -44,17 +46,28 @@
               </div>
             </div>
             <div class="form-group">
-              <label class="col-md-3 control-label">Status</label>
+              <label class="col-md-3 control-label">Type</label>
               <div class="col-md-4">
-                <select class="form-control" name="status" id="status">
-                  <?php foreach($this->statuses as $key => $val): ?>
-                  <?php $selected = ($this->row->status == $key) ? 'selected="selected"': '' ?>
+                <select class="form-control" name="node_type" id="node_type">
+                  <?php foreach($this->types as $key => $val): ?>
+                  <?php $selected = ($this->row->node_type == $key) ? 'selected="selected"': '' ?>
                   <option value="<?php echo $key ?>" <?php echo $selected ?>><?php echo $val ?></option>
                   <?php endforeach; ?>
                 </select>
               </div>
             </div>
-            <?php if ($this->row->status != \Application\Model\Resource::LINK_STATUS_CATEGORY): ?>
+            <div class="form-group">
+              <label class="col-md-3 control-label">Status</label>
+              <div class="col-md-4">
+                <select class="form-control" name="node_status" id="node_status">
+                  <?php foreach($this->statuses as $key => $val): ?>
+                  <?php $selected = ($this->row->node_status == $key) ? 'selected="selected"': '' ?>
+                  <option value="<?php echo $key ?>" <?php echo $selected ?>><?php echo $val ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+            </div>
+            <?php if ($this->row->node_type != \Application\Model\Resource::NODE_TYPE_CATEGORY): ?>
             <div class="form-group">
               <label class="col-md-3 control-label">Tags</label>
               <div class="col-md-4">

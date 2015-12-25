@@ -44,9 +44,19 @@
               </div>
             </div>
             <div class="form-group">
+              <label class="col-md-3 control-label">Type</label>
+              <div class="col-md-4">
+                <select class="form-control" name="node_type" id="node_type">
+                  <?php foreach($this->types as $key => $val): ?>
+                  <option value="<?php echo $key ?>"><?php echo $val ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
               <label class="col-md-3 control-label">Status</label>
               <div class="col-md-4">
-                <select class="form-control" name="status" id="status">
+                <select class="form-control" name="node_status" id="node_status">
                   <?php foreach($this->statuses as $key => $val): ?>
                   <option value="<?php echo $key ?>"><?php echo $val ?></option>
                   <?php endforeach; ?>

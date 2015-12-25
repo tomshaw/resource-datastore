@@ -9138,7 +9138,9 @@ var DataGrid = function() {
                 }
             }, options), tableOptions = options, table = $(options.src), dataTable = table.DataTable(options.dataTable), 
             table.on("click", ".filter-submit", function(e) {
-                e.preventDefault(), that.submitFilter();
+                e.preventDefault(), $(this).pulsate({
+                    repeat: !1
+                }), that.submitFilter();
             }), table.on("click", ".filter-cancel", function(e) {
                 e.preventDefault(), that.resetFilter();
             }), table.on("click", ".btn-view", function(e) {

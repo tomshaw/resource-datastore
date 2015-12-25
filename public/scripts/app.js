@@ -45,6 +45,7 @@ var DataGrid = function() {
 
             table.on('click', '.filter-submit', function(e) {
                 e.preventDefault();
+                $(this).pulsate({repeat: false});
                 that.submitFilter();
             });
 
@@ -60,6 +61,12 @@ var DataGrid = function() {
                 	console.log(resp);
                 });
             });
+            
+            /*var elements = ['.id_from','.id_to'];
+            table.on('click', elements.join(', '), function(e) {
+                console.log('here');
+            });*/
+            
         },
 
         submitFilter: function() {

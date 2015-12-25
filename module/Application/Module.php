@@ -172,15 +172,10 @@ class Module {
         return array(
             'invokables' => array(
                 'AccessControl' => 'Application\Controller\Plugin\AccessControl',
-                'acl' => 'Application\Controller\Plugin\Acl',
-                'dump' => 'Application\Controller\Plugin\Dump'
+                'Roles' => 'Application\Controller\Plugin\Roles',
+                'Dump' => 'Application\Controller\Plugin\Dump'
             ),
             'factories' => array(
-                'authorize' => function ($sm) {
-                    $helper = new Controller\Plugin\Authorize();
-                    $helper->setServiceLocator($sm->getServiceLocator());
-                    return $helper;
-                },
                 'app-header' => function ($sm) {
                     $helper = new Controller\Plugin\Header();
                     $helper->setServiceLocator($sm->getServiceLocator());
@@ -195,15 +190,4 @@ class Module {
         );
     }
 
-    public function getViewHelperConfig()
-    {
-        return array(
-            'factories' => array(
-                'acl' => function ($sm) {
-                    $helper = new \Application\View\Helper\Acl();
-                    return $helper;
-                }
-            )
-        );
-    }
 }

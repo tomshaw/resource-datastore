@@ -33,11 +33,11 @@
               </div>
             </div>
             <div class="form-group has-warning">
-              <label class="col-md-3 control-label">Status</label>
+              <label class="col-md-3 control-label">Type</label>
               <div class="col-md-4">
-                <select class="form-control" name="status" id="status" readonly>
-                  <?php foreach($this->statuses as $key => $val): ?>
-                  <?php $selected = ($this->row->status == $key) ? 'selected="selected"': '' ?>
+                <select class="form-control" name="node_type" id="node_type" readonly>
+                  <?php foreach($this->types as $key => $val): ?>
+                  <?php $selected = ($this->row->node_type == $key) ? 'selected="selected"': '' ?>
                   <option value="<?php echo $key ?>" <?php echo $selected ?>><?php echo $val ?></option>
                   <?php endforeach; ?>
                 </select>

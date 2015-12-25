@@ -81,7 +81,7 @@ class ResourceController extends AbstractActionController
             $data = $this->getResourceTable()->create($post->parent_id);
             
             if ($post->parent_id == 0) {
-                $post->status = ResourceModel::LINK_STATUS_CATEGORY;
+                $post->node_type = ResourceModel::NODE_TYPE_CATEGORY;
             }
     
             $now = new \Zend\Db\Sql\Expression('NOW()');
@@ -90,7 +90,8 @@ class ResourceController extends AbstractActionController
                 'title' => $post->title,
                 'description' => $post->description,
                 'url' => $post->url,
-                'status' => $post->status,
+                'node_type' => $post->node_type,
+                'node_status' => $post->node_status,
                 'parent_id' => $post->parent_id,
                 'user_id' => $userId,
                 'left_id' => $data['left_id'],
@@ -114,6 +115,7 @@ class ResourceController extends AbstractActionController
         
         $vm->setVariables(array(
             'parent_id' => $parentId,
+            'types' => ResourceModel::getTypes(),
             'statuses' => ResourceModel::getStatuses(),
             'navigation' => $navigation
         ));
@@ -143,9 +145,9 @@ class ResourceController extends AbstractActionController
                 $errors[] = 'Could not load resource.';
             }
             
-            if ($row->status == ResourceModel::LINK_STATUS_CATEGORY && $post->status == ResourceModel::LINK_STATUS_RESOURCE) {
+            if ($row->node_type == ResourceModel::NODE_TYPE_CATEGORY && $post->node_type == ResourceModel::NODE_TYPE_RESOURCE) {
                 if ($this->getResourceTable()->hasChildren($row)) {
-                    $errors[] = 'Resource has children so status cannot be changed.';
+                    $errors[] = 'Resource has children so node type cannot be changed.';
                 }
             }
              
@@ -157,14 +159,15 @@ class ResourceController extends AbstractActionController
             }
             
             if ($post->parent_id == 0) {
-                $post->status = ResourceModel::LINK_STATUS_CATEGORY;
+                $post->node_type = ResourceModel::NODE_TYPE_CATEGORY;
             }
             
             $update = array(
                 'title' => $post->title,
                 'description' => $post->description,
                 'url' => $post->url,
-                'status' => $post->status,
+                'node_type' => $post->node_type,
+                'node_status' => $post->node_status,
                 'updated_at' => new \Zend\Db\Sql\Expression('NOW()')
             );
             
@@ -195,6 +198,7 @@ class ResourceController extends AbstractActionController
             'id' => $id,
             'parent_id' => $parentId,
             'row' => $resource,
+            'types' => ResourceModel::getTypes(),
             'statuses' => ResourceModel::getStatuses()
         ));
         
@@ -264,7 +268,7 @@ class ResourceController extends AbstractActionController
         $vm->setVariables(array(
             'row' => $resource,
             'children' => $children,
-            'statuses' => ResourceModel::getStatuses()
+            'types' => ResourceModel::getTypes()
         ));
     
         return $vm;

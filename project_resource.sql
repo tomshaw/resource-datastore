@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 24, 2015 at 05:09 PM
+-- Generation Time: Dec 25, 2015 at 12:11 AM
 -- Server version: 5.7.9-log
 -- PHP Version: 7.0.0
 
@@ -23,19 +23,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `backup`
---
-
-CREATE TABLE `backup` (
-  `id` int(11) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `description` text,
-  `url` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `resource`
 --
 
@@ -44,7 +31,8 @@ CREATE TABLE `resource` (
   `title` varchar(255) NOT NULL,
   `description` text,
   `url` varchar(255) DEFAULT NULL,
-  `status` tinyint(3) UNSIGNED NOT NULL DEFAULT '1',
+  `node_status` tinyint(3) UNSIGNED NOT NULL DEFAULT '1',
+  `node_type` tinyint(3) UNSIGNED NOT NULL DEFAULT '1',
   `views` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `user_id` int(11) NOT NULL,
   `parent_id` int(11) NOT NULL DEFAULT '0',
@@ -119,16 +107,13 @@ CREATE TABLE `user` (
 --
 
 --
--- Indexes for table `backup`
---
-ALTER TABLE `backup`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `resource`
 --
 ALTER TABLE `resource`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `views` (`views`),
+  ADD KEY `nore_status` (`node_status`),
+  ADD KEY `node_type` (`node_type`);
 
 --
 -- Indexes for table `tag`
@@ -161,20 +146,15 @@ ALTER TABLE `user`
 --
 
 --
--- AUTO_INCREMENT for table `backup`
---
-ALTER TABLE `backup`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
---
 -- AUTO_INCREMENT for table `resource`
 --
 ALTER TABLE `resource`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
 --
 -- AUTO_INCREMENT for table `tag`
 --
 ALTER TABLE `tag`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 --
 -- AUTO_INCREMENT for table `testing`
 --
