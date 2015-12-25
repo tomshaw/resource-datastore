@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta content="" name="description" />
+<meta content="" name="author" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Links System</title>
+<?php echo $this->headTitle() ?>
+
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
+
+<link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+<link href="/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="/vendor/jquery.tagsinput/src/jquery.tagsinput.css" rel="stylesheet">
+<link href="/vendor/jstree/dist/themes/default/style.css" rel="stylesheet">
+<link href="/acp/css/style.css" rel="stylesheet">
+<link href="/acp/css/responsive.css" rel="stylesheet">
+
+<?php echo $this->headLink() ?>
+
+</head>
+<body>
+
+<div id="wrapper">
+  <?php echo $this->placeholder('navbar'); ?>
+  <div id="page-wrapper">
+    <?php echo $this->content ?>
+ </div>
+</div>
+
+<script src="/vendor/jquery/dist/jquery.js"></script> 
+<script src="/vendor/bootstrap/dist/js/bootstrap.js"></script> 
+<script src="/vendor/underscore/underscore-min.js"></script>
+<script src="/vendor/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+<script src="/vendor/jstree/dist/jstree.min.js"></script>
+<script src="/acp/js/app.js"></script> 
+<?php echo $this->inlineScript() ?>
+
+</body>
+</html>

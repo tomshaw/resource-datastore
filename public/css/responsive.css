@@ -1,0 +1,43 @@
+@media screen and (min-width: 64em) {
+  .btn {
+    padding: 0.45rem 1rem;
+  }
+
+  .project-name {
+    font-size: 3.25rem;
+  }
+
+  .project-tagline {
+    font-size: 1.25rem;
+  }
+
+  .main-content {
+    font-size: 1.1rem;
+  }
+}
+@media screen and (min-width: 42em) and (max-width: 64em) {
+  .project-name {
+    font-size: 2.25rem;
+  }
+
+  .project-tagline {
+    font-size: 1.15rem;
+  }
+
+  .main-content {
+    font-size: 1.1rem;
+  }
+}
+@media screen and (max-width: 42em) {
+  .project-name {
+    font-size: 1.75rem;
+  }
+
+  .project-tagline {
+    font-size: 1rem;
+  }
+
+  .main-content {
+    font-size: 1rem;
+  }
+}

@@ -1,0 +1,179 @@
+<div class="page-head">
+  <div class="page-title">
+    <h1>Admin Resources <small>node list model</small></h1>
+  </div>
+</div>
+
+<ul class="page-breadcrumb breadcrumb">
+  <li> <a href="/admin">Administration</a> <i class="fa fa-circle"></i> </li>
+  <li> <a href="/admin/resource">Resources</a><?php if(sizeof($this->navigation)): ?><i class="fa fa-circle"><?php endif; ?></i> </li>
+  <?php $count = 0; ?>
+  <?php foreach($this->navigation as $nav): ?>
+  <?php $count++ ?>
+  <li> <a href="/admin/resource/parent_id/<?php echo $nav['id'] ?>"><?php echo $nav['title'] ?></a><?php if(count($this->navigation) != $count): ?><i class="fa fa-circle"></i><?php endif; ?> </li>
+  <?php endforeach; ?>
+</ul>
+
+<?php echo $this->partial('admin/messages'); ?>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="portlet">
+      <div class="portlet-title">
+        <div class="caption"> <i class="icon-bar-chart"></i> <span class="caption-subject bold uppercase">Resources Datastore</span> <span class="caption-helper">node management.</span> </div>
+        <div class="actions">
+          <div class="btn-group"> 
+            <a class="btn btn-sm green" href="/admin/resource/create/parent_id/<?php echo $this->parent_id ?>"> Create Resource <i class="fa fa-location-arrow"></i> </a>
+          </div>
+        </div>
+      </div>
+      <div class="portlet-body">
+        <div class="tabbable-line">
+          <ul class="nav nav-tabs">
+            <li class="active"> <a href="#overview_1" data-toggle="tab"> Resources </a> </li>
+            <li> <a href="#overview_2" data-toggle="tab"> Most Viewed </a> </li>
+            <li> <a href="#overview_3" data-toggle="tab"> Branch View </a> </li>
+            <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Miscellaneous <i class="fa fa-angle-down"></i> </a>
+              <ul class="dropdown-menu" role="menu">
+                <li> <a href="#overview_4" tabindex="-1" data-toggle="tab"> Clean Tags </a> </li>
+                <li> <a href="#overview_4" tabindex="-1" data-toggle="tab"> Export List </a> </li>
+              </ul>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="overview_1">
+              <div class="table-responsive">
+                <table class="table table-striped table-bordered table-condensed">
+                  <thead>
+                    <tr>
+                      <th style="width: 6%; text-align: center;">Edit</th>
+                      <th style="width: 24%;">&nbsp;Title</th>
+                      <th style="width: 8%; text-align: center;">Type</th>
+                      <th style="width: 10%; text-align: center;">User</th>
+                      <th style="width: 8%; text-align: center;">Created</th>
+                      <th style="width: 8%; text-align: center;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php foreach($this->rows as $row): ?>
+                    <tr>
+                      <td style="text-align: center;"><a class="btn" href="/admin/resource/edit/id/<?php echo $row['id'] ?>/parent_id/<?php echo $row['parent_id'] ?>"><span class="label label-sm label-primary">Edit</span></a></td>
+                      <td><?php if($row['status'] == \Application\Model\Resource::LINK_STATUS_CATEGORY): ?>
+                        <a href="/admin/resource/parent_id/<?php echo $row['id'] ?>" title="<?php echo strip_tags($row['title']) ?>"><?php echo strip_tags($row['title']) ?></a>
+                        <?php else: ?>
+                        <i><?php echo strip_tags($row['title']) ?></i>
+                        <?php endif; ?></td>
+                      <td style="text-align: center;"><span class="label label-info">
+                        <?php if($row['status'] == \Application\Model\Resource::LINK_STATUS_RESOURCE): ?>
+                        Resource
+                        <?php else: ?>
+                        Category
+                        <?php endif; ?>
+                        </span></td>
+                      <td style="text-align: center;"><strong><?php echo $row['username'] ?></strong></td>
+                      <td style="text-align: center;"><?php echo $row['created_at'] ?></td>
+                      <td style="text-align: center;"><?php if($row['url']): ?>
+                        <a class="btn" href="<?php echo $row['url'] ?>" target="_blank"><span class="label label-sm label-info">View</span></a>
+                        <?php endif; ?>
+                        <a class="btn" href="/admin/resource/delete/id/<?php echo $row['id'] ?>" onclick="return confirm('Are you sure you wish to delete selected resources?');"><span class="label label-sm label-danger">Delete</span></a></td>
+                    </tr>
+                    <?php endforeach; ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="tab-pane" id="overview_2">
+              <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered">
+                  <thead>
+                    <tr>
+                      <th style="width: 92%;"> Resource Information </th>
+                      <th style="width: 8%;text-align:center;"> Views </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php foreach($this->views as $view): ?>
+                    <tr>
+                      <td><a href="<?php echo $view['url'] ?>" title="<?php echo $view['title'] ?>" target="_blank"> <?php echo $view['title'] ?> </a><br/><?php echo $view['description'] ?> </td>
+                      <td style="text-align:center;"> <?php echo $view['views'] ?> </td>
+                    </tr>
+                    <?php endforeach; ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="tab-pane" id="overview_3">
+              <div id="tree" class="tree"> </div>
+            </div>
+            <div class="tab-pane" id="overview_4">
+              <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered">
+                  <thead>
+                    <tr>
+                      <th> Customer Name </th>
+                      <th> Date </th>
+                      <th> Amount </th>
+                      <th> Status </th>
+                      <th> </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><a href="#"> David Wilson </a></td>
+                      <td> 3 Jan, 2013 </td>
+                      <td> $625.50 </td>
+                      <td><span class="label label-sm label-warning"> Pending </span></td>
+                      <td><a href="#" class="btn default btn-xs green-stripe"> View </a></td>
+                    </tr>
+                    <tr>
+                      <td><a href="#"> Amanda Nilson </a></td>
+                      <td> 13 Feb, 2013 </td>
+                      <td> $12625.50 </td>
+                      <td><span class="label label-sm label-warning"> Pending </span></td>
+                      <td><a href="#" class="btn default btn-xs green-stripe"> View </a></td>
+                    </tr>
+                    <tr>
+                      <td><a href="#"> Jhon Doe </a></td>
+                      <td> 20 Mar, 2013 </td>
+                      <td> $125.00 </td>
+                      <td><span class="label label-sm label-success"> Success </span></td>
+                      <td><a href="#" class="btn default btn-xs green-stripe"> View </a></td>
+                    </tr>
+                    <tr>
+                      <td><a href="#"> Bill Chang </a></td>
+                      <td> 29 May, 2013 </td>
+                      <td> $12,125.70 </td>
+                      <td><span class="label label-sm label-info"> In Process </span></td>
+                      <td><a href="#" class="btn default btn-xs green-stripe"> View </a></td>
+                    </tr>
+                    <tr>
+                      <td><a href="#"> Paul Strong </a></td>
+                      <td> 1 Jun, 2013 </td>
+                      <td> $890.85 </td>
+                      <td><span class="label label-sm label-success"> Success </span></td>
+                      <td><a href="#" class="btn default btn-xs green-stripe"> View </a></td>
+                    </tr>
+                    <tr>
+                      <td><a href="#"> Jane Hilson </a></td>
+                      <td> 5 Aug, 2013 </td>
+                      <td> $239.85 </td>
+                      <td><span class="label label-sm label-danger"> Canceled </span></td>
+                      <td><a href="#" class="btn default btn-xs green-stripe"> View </a></td>
+                    </tr>
+                    <tr>
+                      <td><a href="#"> Patrick Walker </a></td>
+                      <td> 6 Aug, 2013 </td>
+                      <td> $1239.85 </td>
+                      <td><span class="label label-sm label-success"> Success </span></td>
+                      <td><a href="#" class="btn default btn-xs green-stripe"> View </a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

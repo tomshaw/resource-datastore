@@ -1,0 +1,66 @@
+<div class="page-head">
+  <div class="page-title">
+    <h1>Delete Resource<small> Uniform resource locator.</small></h1>
+  </div>
+</div>
+
+<ul class="page-breadcrumb breadcrumb">
+  <li> <a href="/admin">Administration</a> <i class="fa fa-circle"></i> </li>
+  <li> <a href="/admin/resource">Resources</a> <i class="fa fa-circle"></i> </li>
+  <?php $count = 0; ?>
+  <?php foreach($this->navigation as $nav): ?>
+  <?php $count++ ?>
+  <li> <a href="/admin/resource/parent_id/<?php echo $nav['id'] ?>"><?php echo $nav['title'] ?></a><i class="fa fa-circle"></i> </li>
+  <?php endforeach; ?>
+  <li> <a href="/admin/resource/edit/id/<?php echo $row->id ?>/parent_id/<?php echo $row->parent_id ?>"><?php echo $row->title ?></a> </li>
+</ul>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="portlet box">
+      <div class="portlet-title">
+        <div class="caption"> <i class="fa fa-gift"></i>Available Options </div>
+      </div>
+      <div class="portlet-body form">
+        <form action="/admin/resource/delete/id/<?php echo $row->id ?>" method="post" class="form-horizontal">
+          <?php echo $this->token ?>
+          <input type="hidden" name="id" value="<?php echo $row->id ?>" />
+          <div class="form-body">
+            <div class="form-group">
+              <label class="col-md-3 control-label">Title</label>
+              <div class="col-md-4">
+                <input type="text" name="title" required="required" class="form-control input-circle" value="<?php echo $row->title ?>" readonly>
+              </div>
+            </div>
+            <div class="form-group has-warning">
+              <label class="col-md-3 control-label">Status</label>
+              <div class="col-md-4">
+                <select class="form-control" name="status" id="status" readonly>
+                  <?php foreach($this->statuses as $key => $val): ?>
+                  <?php $selected = ($this->row->status == $key) ? 'selected="selected"': '' ?>
+                  <option value="<?php echo $key ?>" <?php echo $selected ?>><?php echo $val ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+            </div>
+            <?php if ($children): ?>
+            <div class="form-group has-error">
+              <label class="col-md-3 control-label">Children</label>
+              <div class="col-md-4">
+                <input type="text" name="children" required="required" class="form-control input-circle" value="<?php echo count($children) ?>" readonly>
+              </div>
+            </div>
+            <?php endif; ?>
+          </div>
+          <div class="form-actions">
+            <div class="row">
+              <div class="col-md-offset-3 col-md-9">
+                <button type="submit" class="btn btn-danger"><?php if ($children): ?>Delete Resources<?php else: ?>Delete Resource<?php endif; ?></button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
