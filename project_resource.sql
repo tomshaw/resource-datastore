@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 25, 2015 at 12:11 AM
+-- Generation Time: Dec 27, 2015 at 05:55 AM
 -- Server version: 5.7.9-log
 -- PHP Version: 7.0.0
 
@@ -19,6 +19,21 @@ SET time_zone = "+00:00";
 --
 -- Database: `project_resource`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `activity`
+--
+
+CREATE TABLE `activity` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED DEFAULT '0',
+  `text` text NOT NULL,
+  `icon` varchar(255) NOT NULL,
+  `ip_address` int(10) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -107,6 +122,12 @@ CREATE TABLE `user` (
 --
 
 --
+-- Indexes for table `activity`
+--
+ALTER TABLE `activity`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `resource`
 --
 ALTER TABLE `resource`
@@ -146,15 +167,20 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT for table `activity`
+--
+ALTER TABLE `activity`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+--
 -- AUTO_INCREMENT for table `resource`
 --
 ALTER TABLE `resource`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=167;
 --
 -- AUTO_INCREMENT for table `tag`
 --
 ALTER TABLE `tag`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 --
 -- AUTO_INCREMENT for table `testing`
 --

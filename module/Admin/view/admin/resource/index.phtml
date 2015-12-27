@@ -16,7 +16,7 @@
 
 <?php echo $this->partial('admin/messages'); ?>
 
-<div class="row">
+<div class="row" id="resources">
   <div class="col-md-12">
     <div class="portlet">
       <div class="portlet-title">
@@ -71,7 +71,7 @@
                       <td style="text-align: center;"><?php echo date('F jS Y', strtotime($row['created_at'])) ?></td>
                       <td style="text-align: center;">
                         <?php if($row['url']): ?>
-                        <a class="btn" href="<?php echo $row['url'] ?>" target="_blank"><span class="label label-sm label-info">View</span></a>
+                        <a class="btn btn-view" href="<?php echo $row['url'] ?>" data-id="<?php echo $row['id'] ?>" target="_blank"><span class="label label-sm label-info">View</span></a>
                         <?php endif; ?>
                         <a class="btn" href="/admin/resource/delete/id/<?php echo $row['id'] ?>" onclick="return confirm('Are you sure you wish to delete selected resources?');"><span class="label label-sm label-danger">Delete</span></a>
                       </td>

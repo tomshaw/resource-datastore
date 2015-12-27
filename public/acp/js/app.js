@@ -26,6 +26,16 @@ var App = function () {
             jQuery('html').addClass('ie');
         }
         
+        if ($('#resources').length) {
+            $('.table').on('click', '.btn-view', function(e) {
+        	    var id = $(this).data('id');
+                var promise = $.post('/views', { id: id });
+                promise.done(function (resp) {
+            	    console.log(resp);
+                });
+            });
+        }
+        
     }
     
     var handleMenu = function () {
