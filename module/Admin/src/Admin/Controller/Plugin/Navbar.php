@@ -24,11 +24,9 @@ class Navbar extends AbstractPlugin
         $storage = $this->getServiceLocator()->get('AuthStorage');
         
         if ($storage) {
-            $user = $this->getServiceLocator()->get('Application\Model\UserTable');
             $view = $this->getServiceLocator()->get('ViewRenderer');
             $view->placeholder('navbar')->append($view->partial('admin/navbar', array(
-                'data' => $storage->read(),
-                'user' => $user
+                'auth' => $storage->read()
             )));
         }
     }

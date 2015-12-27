@@ -61,6 +61,21 @@ h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
 Scrollbar.
 ========================================================================== */
 
+.btn-primary {
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+}
+
+.btn {
+    border: none;
+    border-radius: 0;
+}
+
+/* ==========================================================================
+Scrollbar.
+========================================================================== */
+
 #wrapper {
 	padding-left: 0;
 }
@@ -298,23 +313,26 @@ Portlets box forms.
 ========================================================================== */
 
 .portlet.box {
-	padding: 0px !important;
-	background: #222;
+	padding: 0 !important;
+	background: #f7f7f7;
+	border: 1px solid #d5d5d5;
 }
 
 .portlet.box>.portlet-title {
 	border-bottom: 0;
 	padding: 0 10px;
 	margin-bottom: 0;
-	color: #fff;
+	color: #813333;
 }
 
 .portlet.box>.portlet-title>.caption {
 	padding: 14px 0 0 0;
+	color: #813333;
 }
 
 .portlet.box>.portlet-body {
 	background-color: #fff;
+	border-top: 1px solid #d5d5d5;
 	padding: 10px;
 }
 
@@ -402,41 +420,41 @@ Custom Tabs.
 Navbar messages dropdown.
 ========================================================================== */
 
-.messages-dropdown .dropdown-menu .message-preview .avatar,
-.messages-dropdown .dropdown-menu .message-preview .name,
-.messages-dropdown .dropdown-menu .message-preview .message,
-.messages-dropdown .dropdown-menu .message-preview .time {
-	display: block;
+.navbar-inverse {
+    background-color: #f7f7f7;
+    border-color: #e5e5e5;
 }
 
-.messages-dropdown .dropdown-menu .message-preview .avatar {
-	float: left;
-	margin-right: 15px;
+.navbar-inverse .navbar-brand {
+    color: #3d4549;
+	font-weight: 700;
+	text-transform: uppercase;
 }
 
-.messages-dropdown .dropdown-menu .message-preview .name {
-	font-weight: bold;
+.navbar-inverse .navbar-brand:hover,
+.navbar-inverse .navbar-brand:focus {
+    color: #3d4549;
+    background-color: transparent;
 }
 
-.messages-dropdown .dropdown-menu .message-preview .message {
-	font-size: 12px;
+.navbar-inverse .navbar-nav>.active>a, 
+.navbar-inverse .navbar-nav>.active>a:focus, 
+.navbar-inverse .navbar-nav>.active>a:hover {
+    color: #333333;
+    background-color: #e6f1f6;
 }
 
-.messages-dropdown .dropdown-menu .message-preview .time {
-	font-size: 12px;
+.navbar-inverse .navbar-nav>li>a:hover,
+.navbar-inverse .navbar-nav>li>a:focus {
+    color: #333333;
+    background-color: #e6f1f6;
 }
 
-/* ==========================================================================
-Announcement heading.
-========================================================================== */
-
-.announcement-heading {
-	font-size: 50px;
-	margin: 0;
-}
-
-.announcement-text {
-	margin: 0;
+.navbar-inverse .navbar-nav>.open>a, 
+.navbar-inverse .navbar-nav>.open>a:focus, 
+.navbar-inverse .navbar-nav>.open>a:hover {
+    color: #333;
+    background-color: #e6f1f6;
 }
 
 /* ==========================================================================
@@ -446,4 +464,86 @@ Announcement heading.
 .table a.btn {
 	padding: 0;
 	margin: 0;
+}
+
+/* ==========================================================================
+Widget Thumb
+========================================================================== */
+
+.bars, .chart, .pie {
+    overflow: hidden;
+    height: 300px;
+    width: 100%;
+    font-size: 14px;
+}
+
+.widget-thumb {
+    padding: 20px;
+    border-radius: 4px;
+	margin-bottom: 20px;
+}
+.widget-bg-color-white {
+    background: #fff;
+}
+.margin-bottom-20 {
+    margin-bottom: 20px!important;
+}
+
+.widget-thumb .widget-thumb-heading {
+    font-size: 14px;
+    font-weight: 700;
+    color: #8e9daa;
+    margin: 0 0 20px;
+}
+
+.widget-thumb .widget-thumb-wrap .widget-thumb-icon {
+    float: left;
+    width: 60px;
+    height: 60px;
+    display: inline-block;
+    font-size: 20px;
+    line-height: 41px;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    margin-right: 15px;
+}
+
+.widget-thumb .widget-thumb-body .widget-thumb-subtitle {
+    padding-top: 2px;
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #8e9daa;
+}
+
+.widget-thumb .widget-thumb-body .widget-thumb-body-stat {
+    display: block;
+    font-size: 30px;
+    font-weight: 600;
+    color: #3e4f5e;
+}
+
+.bg-green, .bg-hover-green:hover {
+	background: #32c5d2 !important;
+}
+
+.bg-hover-red:hover, .bg-red {
+	background: #e7505a !important;
+}
+
+.bg-purple {
+	background: #8E44AD !important;
+}
+
+.bg-hover-purple:hover {
+	background: #8E44AD !important;
+}
+
+.bg-blue {
+	background: #3598dc !important;
+}
+
+.bg-hover-blue:hover {
+	background: #3598dc !important;
 }

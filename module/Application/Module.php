@@ -1,5 +1,4 @@
 <?php
-
 namespace Application;
 
 namespace Application;
@@ -14,6 +13,8 @@ use Zend\Cache\StorageFactory;
 
 // use Zend\Session\Container;
 use Application\Model\AuthStorage;
+use Application\Model\Activity;
+use Application\Model\ActivityTable;
 use Application\Model\User;
 use Application\Model\UserTable;
 use Application\Model\Resource;
@@ -22,17 +23,25 @@ use Application\Model\Tag;
 use Application\Model\TagTable;
 use Application\Model\TagResource;
 use Application\Model\TagResourceTable;
+use Application\Model\DashboardTable;
 
-class Module {
-    
+class Module
+{
+
     public function onBootstrap(MvcEvent $e)
     {
         $eventManager = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
         
-        $eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_ROUTE, array($this,'handleAccessControl'), 2);
-        $eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_ROUTE, array($this,'handlePartials'), 2);
+        $eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_ROUTE, array(
+            $this,
+            'handleAccessControl'
+        ), 2);
+        $eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_ROUTE, array(
+            $this,
+            'handlePartials'
+        ), 2);
     }
 
     public function handleAccessControl(MvcEvent $e)
@@ -48,21 +57,29 @@ class Module {
         
         if ($match) {
             $sharedManager->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function ($e) use($serviceManager) {
-                $serviceManager->get('ControllerPluginManager')->get('AccessControl')->initialize($e);
+                $serviceManager->get('ControllerPluginManager')
+                    ->get('AccessControl')
+                    ->initialize($e);
             }, 2);
         }
     }
 
     public function handlePartials(MvcEvent $e)
     {
-        $sharedManager = $e->getApplication()->getEventManager()->getSharedManager();
+        $sharedManager = $e->getApplication()
+            ->getEventManager()
+            ->getSharedManager();
         $sharedManager->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function ($e) {
             $controller = $e->getTarget();
             $controllerClass = get_class($controller);
             $moduleNamespace = substr($controllerClass, 0, strpos($controllerClass, '\\'));
             if ($moduleNamespace == __NAMESPACE__) {
-                $serviceManager = $e->getApplication()->getServiceManager();
-                $serviceManager->get('ControllerPluginManager')->get('app-header')->setServiceLocator($serviceManager)->init();
+                $serviceManager = $e->getApplication()
+                    ->getServiceManager();
+                $serviceManager->get('ControllerPluginManager')
+                    ->get('app-header')
+                    ->setServiceLocator($serviceManager)
+                    ->init();
             }
         }, 100);
     }
@@ -115,6 +132,17 @@ class Module {
                     $authService->setStorage($sm->get('AuthStorage'));
                     return $authService;
                 },
+                'Application\Model\Activity' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Activity());
+                    return new TableGateway('activity', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Application\Model\ActivityTable' => function ($sm) {
+                    $tableGateway = $sm->get('Application\Model\Activity');
+                    $table = new ActivityTable($tableGateway);
+                    return $table;
+                },
                 'Application\Model\User' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
@@ -160,9 +188,26 @@ class Module {
                     return $table;
                 },
                 'Application\Model\ResourceFactory' => 'Application\Model\ResourceFactory',
+                'Application\Model\DashboardTable' => function ($sm) {
+                    $tableGateway = $sm->get('Application\Model\Resource');
+                    $table = new DashboardTable($tableGateway);
+                    return $table;
+                },
                 /*'aliases' => array(
                     'cache' => 'ZendCacheStorageFactory'
                 )*/
+            )
+        );
+    }
+
+    public function getViewHelperConfig()
+    {
+        return array(
+            'factories' => array(
+                'TimeFormat' => function ($sm) {
+                    $helper = new \Application\View\Helper\TimeFormat();
+                    return $helper;
+                }
             )
         );
     }
@@ -181,6 +226,11 @@ class Module {
                     $helper->setServiceLocator($sm->getServiceLocator());
                     return $helper;
                 },
+                'activity' => function ($sm) {
+                    $helper = new Controller\Plugin\Activity();
+                    $helper->setServiceLocator($sm->getServiceLocator());
+                    return $helper;
+                },
                 'tags' => function ($sm) {
                     $helper = new Controller\Plugin\Tags();
                     $helper->setServiceLocator($sm->getServiceLocator());
@@ -189,5 +239,4 @@ class Module {
             )
         );
     }
-
 }

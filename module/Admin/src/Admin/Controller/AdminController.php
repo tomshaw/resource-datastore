@@ -4,13 +4,15 @@ namespace Admin\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-//use Zend\Json\Json;
+use Zend\Json\Json;
 
 class AdminController extends AbstractActionController
 {
     protected $authservice;
     
     protected $dashboardTable;
+    
+    protected $activityTable;
     
     public function getAuthService()
     {
@@ -29,10 +31,67 @@ class AdminController extends AbstractActionController
         return $this->dashboardTable;
     }
     
+    public function getActivityTable()
+    {
+        if (!$this->activityTable) {
+            $sm = $this->getServiceLocator();
+            $this->activityTable = $sm->get('Application\Model\ActivityTable');
+        }
+        return $this->activityTable;
+    }
+    
 	public function indexAction()
 	{
+	    $this->append();
+
 	    $vm = new ViewModel();
+	    
+	    $vm->setVariable('activity', $this->getActivityTable()->fetchLatest());
+	    
 	    return $vm;
+	}
+	
+	public function dataAction()
+	{
+	    $request = $this->getRequest();
+	
+	    $response = $this->getResponse();
+	
+	    $errors = array();
+	
+	    if (!$request->isXmlHttpRequest()) {
+	        //$errors[] = 'Invalid access method.';
+	    }
+	
+	    if (sizeof($errors)) {
+	        $response->setStatusCode(200)->setContent(Json::encode(array('errors'=>$errors)));
+	        return $response;
+	    }
+	
+	    $results = $this->getDashboardTable()->fetchTopTags();
+	
+	    $response->setStatusCode(200);
+	
+	    $response->setContent(Json::encode($results));
+	
+	    return $response;
+	}
+	
+	public function append()
+	{
+        //$this->getServiceLocator()->get('viewhelpermanager')->get('HeadLink')->appendStylesheet('/assets/plugins/autocomplete/css/autocomplete.css');
+	
+        $this->getServiceLocator()->get('viewhelpermanager')->get('InlineScript')
+            ->appendFile('/vendor/Flot/jquery.flot.js')
+            ->appendFile('/vendor/Flot/jquery.flot.resize.js')
+            ->appendFile('/vendor/Flot/jquery.flot.categories.js')
+            ->appendFile('/vendor/amcharts/dist/amcharts/amcharts.js')
+            //->appendFile('/vendor/amcharts/dist/amcharts/plugins/dataloader/dataloader.min.js')
+            ->appendFile('/vendor/amcharts/dist/amcharts/themes/light.js')
+            ->appendFile('/vendor/amcharts/dist/amcharts/serial.js')
+            ->appendFile('/vendor/amcharts/dist/amcharts/pie.js')
+            ->appendFile('/acp/js/dashboard.js');
+        
 	}
 	
 }

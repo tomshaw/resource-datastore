@@ -70,6 +70,7 @@ class LoginController extends AbstractActionController
             }
             
             if (sizeof($errors)) {
+                $this->activity('Failed login attempt.', 'fa-user');
                 $this->flashmessenger()->addMessage($errors[0]);
                 return $this->redirect()->toRoute('login');
             }
@@ -105,6 +106,8 @@ class LoginController extends AbstractActionController
             $storage->write($columns);
             
             $storage->lastLogin();
+            
+            $this->activity($columns->username . ' has logged in.', 'fa-user');
 
             $this->flashMessenger()->addMessage('You have successfully logged in!','success');
             
@@ -126,6 +129,7 @@ class LoginController extends AbstractActionController
     
     public function logoutAction()
     {
+        $this->activity($this->getAuthService()->getIdentity()->username . ' has logged out.', 'fa-user');
         $this->getSessionStorage()->forgetMe();
         $this->getAuthService()->clearIdentity();
         $this->flashmessenger()->addMessage('Thank you for visiting!','success');

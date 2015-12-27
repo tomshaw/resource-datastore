@@ -19,6 +19,16 @@ return array(
                     )
                 )
             ),
+            'admin-dashboard-data' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/admin/dashboard',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Admin',
+                        'action' => 'data'
+                    )
+                )
+            ),
             'admin-resource' => array(
                 'type' => 'Segment',
                 'options' => array(

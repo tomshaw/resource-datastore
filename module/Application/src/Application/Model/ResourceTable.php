@@ -185,7 +185,7 @@ class ResourceTable
         
         $select->where->equalTo('resource.parent_id', intval($parentId));
         
-        $select->order('resource.node_type ASC');
+        $select->order('resource.title ASC');
         
         $statement = $sql->prepareStatementForSqlObject($select);
         

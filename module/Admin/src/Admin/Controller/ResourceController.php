@@ -58,7 +58,7 @@ class ResourceController extends AbstractActionController
     {
         $parentId = (int) $this->params()->fromRoute('parent_id', false);
         
-        $userId = $this->getAuthService()->getIdentity()->id;
+        $identity = $this->getAuthService()->getIdentity();
         
         $request = $this->getRequest();
         
@@ -93,7 +93,7 @@ class ResourceController extends AbstractActionController
                 'node_type' => $post->node_type,
                 'node_status' => $post->node_status,
                 'parent_id' => $post->parent_id,
-                'user_id' => $userId,
+                'user_id' => $identity->id,
                 'left_id' => $data['left_id'],
                 'right_id' => $data['right_id'],
                 'created_at' => $now,
@@ -101,6 +101,8 @@ class ResourceController extends AbstractActionController
             );
             
             $lastInsertId = $this->getResourceTable()->add($insert);
+            
+            $this->activity($identity->username . ' created resource ' . $post->title, 'fa-check');
     
             $this->flashmessenger()->addMessage('Resource has been created successfully.');
             
@@ -175,6 +177,10 @@ class ResourceController extends AbstractActionController
 
             $this->tags()->process($post->id, $post->tags);
             
+            $identity = $this->getAuthService()->getIdentity();
+            
+            $this->activity($identity->username . ' updated resource ' . $post->title, 'fa-globe');
+            
             $this->flashmessenger()->addMessage('Resource has been updated successfully.');
             
             return $this->redirect()->toRoute('admin-resource-edit', array('id' => $post->id, 'parent_id' => $post->parent_id));
@@ -208,6 +214,8 @@ class ResourceController extends AbstractActionController
     public function deleteAction()
     {
         $id = (int) $this->params()->fromRoute('id', false);
+        
+        $identity = $this->getAuthService()->getIdentity();
     
         $request = $this->getRequest();
     
@@ -242,8 +250,10 @@ class ResourceController extends AbstractActionController
             
             if (isset($post->children)) {
                 $this->getResourceTable()->deleteBranch($id);
+                $this->activity($identity->username . ' deleted branch ' . $row->title, 'fa-exclamation-triangle');
             } else {
                 $this->getResourceTable()->deleteNode($id);
+                $this->activity($identity->username . ' deleted node ' . $row->title, 'fa-exclamation-triangle');
             }
             
             $message = (isset($post->children)) ? 'Resource branch was successfully deleted' : 'Resource node was deleted successfully.';
