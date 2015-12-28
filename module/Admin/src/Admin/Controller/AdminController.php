@@ -6,6 +6,8 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Json\Json;
 
+use Application\Model\Resource as ResourceModel;
+
 class AdminController extends AbstractActionController
 {
     protected $authservice;
@@ -47,6 +49,11 @@ class AdminController extends AbstractActionController
 	    $vm = new ViewModel();
 	    
 	    $vm->setVariable('activity', $this->getActivityTable()->fetchLatest());
+
+	    $vm->setVariable('total_categories', $this->getDashboardTable()->fetchCountResources(ResourceModel::NODE_TYPE_CATEGORY));
+	    $vm->setVariable('total_resources', $this->getDashboardTable()->fetchCountResources(ResourceModel::NODE_TYPE_RESOURCE));
+	    $vm->setVariable('total_views', $this->getDashboardTable()->fetchTotalViews());
+	    $vm->setVariable('total_tags', $this->getDashboardTable()->fetchTotalTags());
 	    
 	    return $vm;
 	}

@@ -4,7 +4,8 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Admin\Controller\Admin' => 'Admin\Controller\AdminController',
-            'Admin\Controller\Resource' => 'Admin\Controller\ResourceController'
+            'Admin\Controller\Resource' => 'Admin\Controller\ResourceController',
+            'Admin\Controller\Activity' => 'Admin\Controller\ActivityController'
         )
     ),
     'router' => array(
@@ -25,6 +26,26 @@ return array(
                     'route' => '/admin/dashboard',
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Admin',
+                        'action' => 'data'
+                    )
+                )
+            ),
+            'admin-activity' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/admin/activity',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Activity',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            'admin-activity-data' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/admin/activity/data',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Activity',
                         'action' => 'data'
                     )
                 )

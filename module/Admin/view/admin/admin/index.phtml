@@ -12,33 +12,33 @@
 <div class="row widget-row">
   <div class="col-md-3">
     <div class="widget-thumb widget-bg-color-white text-uppercase">
-      <h4 class="widget-thumb-heading">Current Balance</h4>
+      <h4 class="widget-thumb-heading">Total Categories</h4>
       <div class="widget-thumb-wrap"> <i class="bg-green widget-thumb-icon fa fa-bar-chart-o"></i>
-        <div class="widget-thumb-body"> <span class="widget-thumb-subtitle">USD</span> <span class="widget-thumb-body-stat" data-counter="counterup" data-value="7,644">7,644</span> </div>
+        <div class="widget-thumb-body"> <span class="widget-thumb-subtitle">COUNT</span> <span class="widget-thumb-body-stat" data-counter="counterup" data-value="<?php echo $this->total_categories ?>"><?php echo $this->total_categories ?></span> </div>
       </div>
     </div>
   </div>
   <div class="col-md-3">
     <div class="widget-thumb widget-bg-color-white text-uppercase">
-      <h4 class="widget-thumb-heading">Weekly Sales</h4>
+      <h4 class="widget-thumb-heading">Total Resources</h4>
       <div class="widget-thumb-wrap"> <i class="bg-red widget-thumb-icon fa fa-bar-chart-o"></i>
-        <div class="widget-thumb-body"> <span class="widget-thumb-subtitle">USD</span> <span class="widget-thumb-body-stat" data-counter="counterup" data-value="1,293">1,293</span> </div>
+        <div class="widget-thumb-body"> <span class="widget-thumb-subtitle">COUNT</span> <span class="widget-thumb-body-stat" data-counter="counterup" data-value="<?php echo $this->total_resources ?>"><?php echo $this->total_resources ?></span> </div>
       </div>
     </div>
   </div>
   <div class="col-md-3">
     <div class="widget-thumb widget-bg-color-white text-uppercase">
-      <h4 class="widget-thumb-heading">Biggest Purchase</h4>
+      <h4 class="widget-thumb-heading">Resource Views</h4>
       <div class="widget-thumb-wrap"> <i class="bg-purple widget-thumb-icon fa fa-bar-chart-o"></i>
-        <div class="widget-thumb-body"> <span class="widget-thumb-subtitle">USD</span> <span class="widget-thumb-body-stat" data-counter="counterup" data-value="815">815</span> </div>
+        <div class="widget-thumb-body"> <span class="widget-thumb-subtitle">TOTAL</span> <span class="widget-thumb-body-stat" data-counter="counterup" data-value="<?php echo $this->total_views ?>"><?php echo $this->total_views ?></span> </div>
       </div>
     </div>
   </div>
   <div class="col-md-3">
     <div class="widget-thumb widget-bg-color-white text-uppercase">
-      <h4 class="widget-thumb-heading">Average Monthly</h4>
+      <h4 class="widget-thumb-heading">Total Tags</h4>
       <div class="widget-thumb-wrap"> <i class="bg-blue widget-thumb-icon fa fa-bar-chart-o"></i>
-        <div class="widget-thumb-body"> <span class="widget-thumb-subtitle">USD</span> <span class="widget-thumb-body-stat" data-counter="counterup" data-value="5,071">5,071</span> </div>
+        <div class="widget-thumb-body"> <span class="widget-thumb-subtitle">COUNT</span> <span class="widget-thumb-body-stat" data-counter="counterup" data-value="<?php echo $this->total_tags ?>"><?php echo $this->total_tags ?></span> </div>
       </div>
     </div>
   </div>
@@ -72,7 +72,7 @@
           <a href="#" class="list-group-item"> <span class="badge"><?php echo $this->TimeFormat($activity['created_at']) ?></span> <i class="fa <?php echo $activity['icon'] ?>"></i> <?php echo $activity['text'] ?> </a> 
           <?php endforeach; ?>
         </div>
-        <div class="text-right"> <a href="#">View All Activity <i class="fa fa-arrow-circle-right"></i></a> </div>
+        <div class="text-right"> <a href="/admin/activity">View All Activity <i class="fa fa-arrow-circle-right"></i></a> </div>
       </div>
     </div>
   </div>

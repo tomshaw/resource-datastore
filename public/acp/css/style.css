@@ -20,10 +20,15 @@ body {
 	margin-top: 50px;
 }
 
+div, svg, input, select, textarea, span, img, table, label, td, th, p, a, button, ul, code, pre, li {
+	-webkit-border-radius: 0 !important;
+	-moz-border-radius: 0 !important;
+	border-radius: 0 !important;
+}
+
 /* ==========================================================================
 General typography
 ========================================================================== */
-
 h1, h2, h3, h4, h5, h6 {
 	font-family: "Open Sans", sans-serif;
 	font-weight: 300;
@@ -61,6 +66,7 @@ h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
 Scrollbar.
 ========================================================================== */
 
+/*
 .btn-primary {
     color: #fff;
     background-color: #337ab7;
@@ -70,7 +76,221 @@ Scrollbar.
 .btn {
     border: none;
     border-radius: 0;
+}*/
+
+/*.table a.btn {
+	padding: 0;
+	margin: 0;
+}*/
+
+.table-data-table a.btn {
+    color: #FFF;
+    background-color: #32c5d2;
+    border-color: #32c5d2;
 }
+
+/*.table-data-table .filter .form-control {
+	width: 100% !important;
+}*/
+
+.margin-bottom-5 {
+	margin: 0 0 5px 0;
+}
+
+.filter-wrap {
+	margin: 5px 0;
+}
+
+.input-inline {
+	display: inline-block;
+	width: auto;
+	vertical-align: middle;
+}
+
+.input-mini {
+	width: 45px !important;
+}
+
+/* ==========================================================================
+Scrollbar.
+========================================================================== */
+
+.btn {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.btn:hover {
+    transition: all 0.3s;
+}
+	
+.btn.default:not(.btn-outline) {
+    color: #666;
+    background-color: #e1e5ec;
+    border-color: #e1e5ec;
+}
+
+.btn.default:not(.btn-outline):focus,
+  .btn.default:not(.btn-outline).focus {
+    color: #666;
+    background-color: #c2cad8;
+    border-color: #c2cad8;
+}
+
+.btn.default:not(.btn-outline):hover {
+    color: #666;
+    background-color: #c2cad8;
+    border-color: #c2cad8;
+}
+
+.btn.default:not(.btn-outline):active,
+  .btn.default:not(.btn-outline).active,
+  .open > .btn.default:not(.btn-outline).dropdown-toggle {
+    color: #666;
+    background-color: #c2cad8;
+    border-color: #c2cad8;
+}
+
+.btn.default:not(.btn-outline):active:hover,
+    .btn.default:not(.btn-outline):active:focus,
+    .btn.default:not(.btn-outline):active.focus,
+    .btn.default:not(.btn-outline).active:hover,
+    .btn.default:not(.btn-outline).active:focus,
+    .btn.default:not(.btn-outline).active.focus,
+    .open > .btn.default:not(.btn-outline).dropdown-toggle:hover,
+    .open > .btn.default:not(.btn-outline).dropdown-toggle:focus,
+    .open > .btn.default:not(.btn-outline).dropdown-toggle.focus {
+    color: #666;
+    background-color: #b8c2d2;
+    border-color: #b8c2d2;
+}
+
+.btn.default:not(.btn-outline):active,
+  .btn.default:not(.btn-outline).active,
+  .open > .btn.default:not(.btn-outline).dropdown-toggle {
+    background-image: none;
+}
+
+.btn.default:not(.btn-outline).disabled,
+  .btn.default:not(.btn-outline).disabled:hover,
+  .btn.default:not(.btn-outline).disabled:focus,
+  .btn.default:not(.btn-outline).disabled.focus,
+  .btn.default:not(.btn-outline).disabled:active,
+  .btn.default:not(.btn-outline).disabled.active,
+  .btn.default:not(.btn-outline)[disabled],
+  .btn.default:not(.btn-outline)[disabled]:hover,
+  .btn.default:not(.btn-outline)[disabled]:focus,
+  .btn.default:not(.btn-outline)[disabled].focus,
+  .btn.default:not(.btn-outline)[disabled]:active,
+  .btn.default:not(.btn-outline)[disabled].active,
+  fieldset[disabled] .btn.default:not(.btn-outline),
+  fieldset[disabled] .btn.default:not(.btn-outline):hover,
+  fieldset[disabled] .btn.default:not(.btn-outline):focus,
+  fieldset[disabled] .btn.default:not(.btn-outline).focus,
+  fieldset[disabled] .btn.default:not(.btn-outline):active,
+  fieldset[disabled] .btn.default:not(.btn-outline).active {
+    background-color: #e1e5ec;
+    border-color: #e1e5ec;
+}
+
+
+.btn.btn-outline.default {
+    border-color: #e1e5ec;
+    color: #e1e5ec;
+    background: none;
+}
+
+.btn.btn-outline.default:hover,
+  .btn.btn-outline.default:active,
+  .btn.btn-outline.default:active:hover,
+  .btn.btn-outline.default:active:focus,
+  .btn.btn-outline.default:focus,
+  .btn.btn-outline.default.active {
+    border-color: #e1e5ec;
+    color: #666;
+    background-color: #e1e5ec;
+}
+
+.btn.btn-outline.dark {
+    border-color: #2f353b;
+    color: #2f353b;
+    background: none;
+}
+
+.btn.btn-outline.dark:hover,
+  .btn.btn-outline.dark:active,
+  .btn.btn-outline.dark:active:hover,
+  .btn.btn-outline.dark:active:focus,
+  .btn.btn-outline.dark:focus,
+  .btn.btn-outline.dark.active {
+    border-color: #2f353b;
+    color: #FFFFFF;
+    background-color: #2f353b;
+}
+
+.btn.btn-outline.blue-steel {
+    border-color: #4B77BE;
+    color: #4B77BE;
+    background: none;
+}
+
+.btn.btn-outline.blue-steel:hover,
+  .btn.btn-outline.blue-steel:active,
+  .btn.btn-outline.blue-steel:active:hover,
+  .btn.btn-outline.blue-steel:active:focus,
+  .btn.btn-outline.blue-steel:focus,
+  .btn.btn-outline.blue-steel.active {
+    border-color: #4B77BE;
+    color: #FFFFFF;
+    background-color: #4B77BE;
+}
+
+.btn.btn-outline.green {
+    border-color: #32c5d2;
+    color: #32c5d2;
+    background: none;
+}
+
+.btn.btn-outline.green:hover,
+  .btn.btn-outline.green:active,
+  .btn.btn-outline.green:active:hover,
+  .btn.btn-outline.green:active:focus,
+  .btn.btn-outline.green:focus,
+  .btn.btn-outline.green.active {
+    border-color: #32c5d2;
+    color: #FFFFFF;
+    background-color: #32c5d2;
+}
+
+.btn.btn-outline.red {
+    border-color: #e7505a;
+    color: #e7505a;
+    background: none;
+}
+
+.btn.btn-outline.red:hover,
+  .btn.btn-outline.red:active,
+  .btn.btn-outline.red:active:hover,
+  .btn.btn-outline.red:active:focus,
+  .btn.btn-outline.red:focus,
+  .btn.btn-outline.red.active {
+    border-color: #e7505a;
+    color: #ffffff;
+    background-color: #e7505a;
+}
+
+/***
+Customized Bootstrap Tables
+***/
+.table td,
+.table th {
+  font-size: 14px; }
+
+.table.table-bordered thead > tr > th {
+  border-bottom: 0; }
+
+.table td .img-responsive {
+  width: 100%; }
 
 /* ==========================================================================
 Scrollbar.
@@ -458,15 +678,6 @@ Navbar messages dropdown.
 }
 
 /* ==========================================================================
-Announcement heading.
-========================================================================== */
-
-.table a.btn {
-	padding: 0;
-	margin: 0;
-}
-
-/* ==========================================================================
 Widget Thumb
 ========================================================================== */
 
@@ -547,3 +758,141 @@ Widget Thumb
 .bg-hover-blue:hover {
 	background: #3598dc !important;
 }
+
+/* ==========================================================================
+Widget Thumb
+========================================================================== */
+
+/*table.dataTable thead .sorting:after,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_desc:after,
+table.dataTable thead .sorting_asc_disabled:after,
+table.dataTable thead .sorting_desc_disabled:after {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  display: block;
+  font-family: 'Glyphicons Halflings';
+  opacity: 0.5;
+}*/
+
+table.dataTable thead .sorting,
+table.dataTable thead .sorting_asc,
+table.dataTable thead .sorting_desc,
+table.dataTable thead .sorting_asc_disabled,
+table.dataTable thead .sorting_desc_disabled {
+    background-image: none;
+}
+
+/***
+Datatables general customization
+***/
+.table-checkable tr > th:first-child,
+.table-checkable tr > td:first-child {
+  text-align: center;
+  max-width: 50px;
+  min-width: 40px;
+  padding-left: 0;
+  padding-right: 0; }
+
+table.dataTable thead th,
+table.dataTable thead td {
+  border-bottom: 2px solid #e7ecf1;
+  outline: none !important; }
+
+table.dataTable.no-footer {
+  border-bottom-color: #e7ecf1; }
+
+table.dataTable tr.heading > th {
+  background-color: #fbfcfd; }
+
+table.dataTable td.sorting_1,
+table.dataTable td.sorting_2,
+table.dataTable td.sorting_3,
+table.dataTable th.sorting_1,
+table.dataTable th.sorting_2,
+table.dataTable th.sorting_3 {
+  background: #fbfcfd !important; }
+
+/***
+Extended pagination
+***/
+.paging_bootstrap_extended {
+  margin: 5px 0 0 0 !important;
+  padding: 0 !important;
+  float: none !important;
+  font-size: 13px; }
+
+.dataTables_extended_wrapper {
+  margin-top: 10px; }
+  .dataTables_extended_wrapper .seperator {
+    padding: 0 2px; }
+  .dataTables_extended_wrapper .table.dataTable {
+    margin: 20px 0 !important; }
+  .dataTables_extended_wrapper div.dataTables_paginate,
+  .dataTables_extended_wrapper div.dataTables_length,
+  .dataTables_extended_wrapper div.dataTables_info {
+    display: inline-block;
+    float: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    position: static !important; }
+  .dataTables_extended_wrapper .table-group-actions > span {
+    font-size: 13px; }
+
+@media (max-width: 480px) {
+  .dataTables_extended_wrapper div.dataTables_paginate,
+  .dataTables_extended_wrapper div.dataTables_length,
+  .dataTables_extended_wrapper div.dataTables_info {
+    display: block;
+    margin-bottom: 10px !important; }
+  .dataTables_extended_wrapper .seperator {
+    display: none !important; } }
+
+.dataTables_extended_wrapper div.dataTables_length label {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 13px;
+  float: none !important;
+  display: inline-block !important; }
+
+.table-container .table-actions-wrapper {
+  display: none; }
+
+/***
+Scroller Extension
+***/
+.dataTables_scroll {
+  margin-bottom: 10px; }
+
+.dataTables_scrollHead {
+  border-bottom: 2px solid #e7ecf1 !important; }
+  .dataTables_scrollHead thead th {
+    border-bottom: 0 !important; }
+
+.dataTables_scrollBody {
+  border-bottom: 1px solid #e7ecf1 !important; }
+
+.table-both-scroll .dataTables_scrollBody {
+  border-bottom: 0 !important; }
+
+/***
+Datatables processing
+***/
+.dataTables_wrapper .dataTables_processing {
+  width: 200px;
+  display: inline-block;
+  padding: 7px;
+  left: 50%;
+  margin-left: -100px;
+  margin-top: 10px;
+  text-align: center;
+  color: #3f444a;
+  border: 1px solid #e7ecf1;
+  background: #eef1f5;
+  vertical-align: middle;
+  -webkit-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1); }
+
+

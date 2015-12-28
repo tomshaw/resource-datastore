@@ -10,6 +10,8 @@ use Zend\Db\Sql\Predicate;
 //use Zend\Db\Sql\Expression;
 //use Zend\Db\ResultSet\ResultSet;
 
+use Application\Model\Resource as ResourceModel;
+
 /**
  * @todo top cats, resources
  */
@@ -25,6 +27,47 @@ class DashboardTable {
     public function getAdapter()
     {
         return $this->tableGateway->getAdapter();
+    }
+    
+    public function fetchCountResources($nodeType = ResourceModel::NODE_TYPE_CATEGORY)
+    {
+        $sql = new Sql($this->tableGateway->getAdapter());
+    
+        $select = $sql->select()
+            ->from('resource')
+            ->columns(array(new Predicate\Expression('COUNT(id) AS count')));
+    
+        $select->where->equalTo('node_type', $nodeType);
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+    
+        return $statement->execute()->current()['count'];
+    }
+    
+    public function fetchTotalViews()
+    {
+        $sql = new Sql($this->tableGateway->getAdapter());
+    
+        $select = $sql->select()
+            ->from('resource')
+            ->columns(array(new Predicate\Expression('SUM(views) AS total')));
+    
+        $statement = $sql->prepareStatementForSqlObject($select);
+    
+        return $statement->execute()->current()['total'];
+    }
+    
+    public function fetchTotalTags()
+    {
+        $sql = new Sql($this->tableGateway->getAdapter());
+    
+        $select = $sql->select()
+            ->from('tag')
+            ->columns(array(new Predicate\Expression('COUNT(id) AS count')));
+    
+        $statement = $sql->prepareStatementForSqlObject($select);
+    
+        return $statement->execute()->current()['count'];
     }
     
     public function fetchTopTags()

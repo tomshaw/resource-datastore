@@ -73,6 +73,44 @@ class ActivityTable
         return true;
     }
     
+    public function fetchDataGrid($data = array())
+    {
+        $sql = new Sql($this->tableGateway->getAdapter());
+    
+        $select = $sql->select()
+            ->from(array('activity' => 'activity'))
+            ->columns(array('*', new Predicate\Expression('DATE_FORMAT(activity.created_at, "%b %d, %Y") AS created_at'), new Predicate\Expression('SUBSTRING_INDEX(activity.text, ".", 1) AS teaser')))
+            ->join(array('user' => 'user'), 'user.id = activity.user_id', array('username'), Select::JOIN_INNER);
+    
+        if (isset($data['id_from']) && !empty($data['id_from']) && isset($data['id_to']) && !empty($data['id_to'])) {
+            $select->where->greaterThanOrEqualTo('activity.id', $data['id_from']);
+            $select->where->lessThanOrEqualTo('activity.id', $data['id_to']);
+        } else if (isset($data['id_from']) && !empty($data['id_from'])) {
+            $select->where->greaterThanOrEqualTo('activity.id', $data['id_from']);
+        } else if (isset($data['id_to']) && !empty($data['id_to'])) {
+            $select->where->lessThanOrEqualTo('activity.id', $data['id_to']);
+        }
+    
+        if (isset($data['text']) && !empty($data['text'])) {
+            $select->where->literal('LOWER(activity.text) LIKE "%'.strtolower($data['text']).'%"');
+        }
+    
+        if (isset($data['created_from']) && !empty($data['created_from']) && isset($data['created_to']) && !empty($data['created_to'])) {
+            $select->where->greaterThanOrEqualTo('activity.created_at', $data['created_from']);
+            $select->where->lessThanOrEqualTo('activity.created_at', $data['created_to'] . ' 11:59:59');
+        } else if (isset($data['created_from']) && !empty($data['created_from'])) {
+            $select->where->greaterThanOrEqualTo('activity.created_at', $data['created_from']);
+        } else if (isset($data['created_to']) && !empty($data['created_to'])) {
+            $select->where->lessThanOrEqualTo('activity.created_at', $data['created_to']);
+        }
+    
+        $select->order(array($data['order'] . ' ' . strtoupper($data['sort'])));
+    
+        $statement = $sql->prepareStatementForSqlObject($select);
+    
+        return iterator_to_array($statement->execute());
+    }
+    
     public function fetchLatest()
     {
         $sql = new Sql($this->tableGateway->getAdapter());
