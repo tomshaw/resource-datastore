@@ -3,9 +3,11 @@
 namespace Admin\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-//use Zend\Paginator\Adapter\ArrayAdapter;
-//use Zend\Paginator\Paginator;
+use Zend\Paginator\Adapter\ArrayAdapter;
+use Zend\Paginator\Paginator;
 use Zend\View\Model\ViewModel;
+use Zend\Json\Json;
+use Zend\Session\Container;
 
 use Application\Model\Resource as ResourceModel;
 
@@ -32,26 +34,97 @@ class ResourceController extends AbstractActionController
         return $this->resourceTable;
     }
     
+    public function getSessionContainer()
+    {
+        return new Container('PointsGrid');
+    }
+    
     public function indexAction()
     {   
+        $this->append();
+        
         $parentId = (int) $this->params()->fromRoute('parent_id', false);
         
-        $rows = $this->getResourceTable()->getQueryForParent($parentId);
+        $this->getSessionContainer()->parent_id = $parentId;
         
         $navigation = $this->getResourceTable()->getNavigation($parentId);
         
-        $views = $this->getResourceTable()->getQueryForMostViews();
+        $categories = $this->getResourceTable()->fetchCategories([]);
         
+        $views = $this->getResourceTable()->getQueryForMostViews();
+
         $vm = new ViewModel();
+        
+        $vm->setVariable('categories', $categories);
         
         $vm->setVariables(array(
             'parent_id' => $parentId,
-            'rows' => $rows,
             'views' => $views,
             'navigation' => $navigation
         ));
         
         return $vm;
+    }
+    
+    public function dataAction()
+    {
+        $response = $this->getResponse();
+    
+        $grid = $this->grid('Application\Index\Index', array('-','id','title','category','username','created_at','-'));
+        
+        if (isset($this->getSessionContainer()->parent_id)) {
+            $grid['parent_id'] = $this->getSessionContainer()->parent_id;
+        }
+    
+        $result = $this->getResourceTable()->fetchDataGrid($grid);
+    
+        $adapter = new ArrayAdapter($result);
+    
+        $paginator = new Paginator($adapter);
+    
+        $page = ceil(intval($grid['start']) / intval($grid['length'])) + 1;
+    
+        $paginator->setCurrentPageNumber($page);
+    
+        $paginator->setItemCountPerPage(intval($grid['length']));
+    
+        $data = array();
+        $data['data'] = array();
+    
+        foreach ($paginator as $row) {
+            
+            $category = (array_key_exists('category', $row)) ? $row['category'] : '-';
+            
+            $title = ($row['node_type'] == \Application\Model\Resource::NODE_TYPE_CATEGORY) ? '<a href="/admin/resource/parent_id/' . $row['id'] . '" title="'.strip_tags($row['description']).'">' . strip_tags($row['title']) . '</a>' : '<i>' . strip_tags($row['title']) . '</i>';
+            
+            $actions = '';
+            if ($row['url']) {
+                $actions .= '<a class="btn btn-xs btn-outline blue-steel btn-view" href="' . $row['url'] . '" data-id="' . $row['id'] . '" target="_blank">View</a>&nbsp;';
+            }
+            $actions .= '<a class="btn btn-xs btn-outline red" href="/admin/resource/delete/id/' . $row['id'] . '" onclick="return confirm("Are you sure you wish to delete selected resources?");">Delete</a>';
+            
+            $data['data'][] = array(
+                '<input type="checkbox" name="id['.$row['id'].']" value="'.$row['id'].'" />',
+                '<a class="btn btn-xs btn-outline blue-steel btn-view" href="/admin/resource/edit/id/' . $row['id'] . '/parent_id/' . $row['parent_id'] . '" title="' . $row['id'] . '">Edit: ' . $row['id'] . '</a>',
+                $title,
+                $category,
+                $row['username'],
+                date('F jS Y', strtotime($row['created_at'])),
+                $actions
+            );
+        }
+    
+        $data['page'] = $page;
+        $data['grid'] = $grid;
+        $data['draw'] = intval($grid['draw']);
+        $data['recordsTotal'] = $paginator->getTotalItemCount();
+        $data['recordsFiltered'] = $paginator->getTotalItemCount();
+    
+        $response->setStatusCode(200);
+    
+        $response->setContent(Json::encode($data));
+    
+        return $response;
     }
     
     public function createAction()
@@ -282,6 +355,13 @@ class ResourceController extends AbstractActionController
         ));
     
         return $vm;
+    }
+    
+    public function append()
+    {
+        $this->getServiceLocator()->get('viewhelpermanager')->get('InlineScript')
+            ->appendFile('/acp/js/grids/datagrid.js')
+            ->appendFile('/acp/js/grids/resource.js');
     }
     
 }

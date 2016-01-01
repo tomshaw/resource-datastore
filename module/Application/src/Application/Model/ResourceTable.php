@@ -89,7 +89,7 @@ class ResourceTable
         
         $select->where->equalTo('resource.parent_id', 0);
         
-        $select->where->or->equalTo('resource.node_type', ResourceModel::NODE_TYPE_CATEGORY);
+        //$select->where->or->equalTo('resource.node_type', ResourceModel::NODE_TYPE_CATEGORY);
         
         $select->order('resource.title ASC');
         
@@ -151,10 +151,12 @@ class ResourceTable
         }
         
         if (array_key_exists('category', $data) && !empty($data['category'])) {
+            $row = $this->fetchRow(array('id'=>intval($data['category'])));
             if (is_array($data['category'])) {
                 $select->where->in('resource.parent_id', $data['category']);
             } else {
-                $select->where->equalTo('resource.parent_id', intval($data['category']));
+                $select->where->lessThanOrEqualTo('resource.right_id', intval($row->right_id));
+                $select->where->greaterThanOrEqualTo('resource.left_id', intval($row->left_id));
             }
         }
         
@@ -189,6 +191,65 @@ class ResourceTable
         
         $statement = $sql->prepareStatementForSqlObject($select);
         
+        return iterator_to_array($statement->execute());
+    }
+    
+    public function fetchDataGrid($data = array())
+    {
+        $sql = new Sql($this->tableGateway->getAdapter());
+    
+        $select = $sql->select()
+            ->from(array('resource' => 'resource'))
+            ->columns(array('*', new Predicate\Expression('DATE_FORMAT(resource.created_at, "%b %d, %Y") AS created_at'), new Predicate\Expression('SUBSTRING_INDEX(resource.description, ".", 1) AS teaser')))
+            ->join(array('user' => 'user'), 'user.id = resource.user_id', array('username'), Select::JOIN_INNER);
+        
+        // new Predicate\Expression('IF(resource.parent_id = 0,"-","resource2.title")')
+        if (isset($data['parent_id']) && !empty($data['parent_id']) && $data['parent_id']>0) {
+            $select->join(array('resource2' => 'resource'), 'resource.parent_id = resource2.id', array('category'=>'title'), Select::JOIN_INNER);
+        }
+        
+        if (isset($data['parent_id']) && !empty($data['parent_id'])) {
+            $select->where->equalTo('resource.parent_id', intval($data['parent_id']));
+        } else {
+            $select->where->equalTo('resource.parent_id', 0);
+        }
+    
+        if (isset($data['id_from']) && !empty($data['id_from']) && isset($data['id_to']) && !empty($data['id_to'])) {
+            $select->where->greaterThanOrEqualTo('resource.id', $data['id_from']);
+            $select->where->lessThanOrEqualTo('resource.id', $data['id_to']);
+        } else if (isset($data['id_from']) && !empty($data['id_from'])) {
+            $select->where->greaterThanOrEqualTo('resource.id', $data['id_from']);
+        } else if (isset($data['id_to']) && !empty($data['id_to'])) {
+            $select->where->lessThanOrEqualTo('resource.id', $data['id_to']);
+        }
+    
+        if (isset($data['title']) && !empty($data['title'])) {
+            $select->where->literal('LOWER(resource.title) LIKE "%'.strtolower($data['title']).'%"')->or->literal('LOWER(resource.description) LIKE "%'.strtolower($data['title']).'%"');
+        }
+    
+        if (array_key_exists('category', $data) && !empty($data['category'])) {
+            $row = $this->fetchRow(array('id'=>intval($data['category'])));
+            if (is_array($data['category'])) {
+                $select->where->in('resource.parent_id', $data['category']);
+            } else {
+                $select->where->lessThanOrEqualTo('resource.right_id', intval($row->right_id));
+                $select->where->greaterThanOrEqualTo('resource.left_id', intval($row->left_id));
+            }
+        }
+    
+        if (isset($data['created_from']) && !empty($data['created_from']) && isset($data['created_to']) && !empty($data['created_to'])) {
+            $select->where->greaterThanOrEqualTo('resource.created_at', $data['created_from']);
+            $select->where->lessThanOrEqualTo('resource.created_at', $data['created_to'] . ' 11:59:59');
+        } else if (isset($data['created_from']) && !empty($data['created_from'])) {
+            $select->where->greaterThanOrEqualTo('resource.created_at', $data['created_from']);
+        } else if (isset($data['created_to']) && !empty($data['created_to'])) {
+            $select->where->lessThanOrEqualTo('resource.created_at', $data['created_to']);
+        }
+    
+        $select->order(array($data['order'] . ' ' . strtoupper($data['sort'])));
+    
+        $statement = $sql->prepareStatementForSqlObject($select);
+    
         return iterator_to_array($statement->execute());
     }
     

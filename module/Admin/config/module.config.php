@@ -63,6 +63,16 @@ return array(
                     )
                 )
             ),
+            'admin-resource-data' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/admin/resource/data',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Resource',
+                        'action' => 'data'
+                    )
+                )
+            ),
             'admin-resource-create' => array(
                 'type' => 'Segment',
                 'options' => array(
