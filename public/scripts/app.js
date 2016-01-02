@@ -21,10 +21,9 @@ var DataGrid = function() {
                 resetGroupActionInputOnSuccess: true,
                 loadingMessage: 'Loading...',
                 dataTable: {
-                    "columnDefs": [{ 
-                        'orderable': false,
-                        'targets': [4]
-                    }],
+                    "language": {
+                    	"sSearch": "Tag search:"
+                    },
                     "ajax": {
                         "url": "",
                         "type": "post", 
@@ -152,7 +151,11 @@ var GridAjax = function () {
                 "autoWidth": false, // use responsive
                 "processing": true, 
                 "serverSide": true,
-                "searching": false, // show hide search input
+                "searching": true, // show/hide search.
+                "columnDefs": [{ 
+                    'orderable': false,
+                    'targets': [4]
+                }],
                 "ajax": {
                     "url": "/data",
                 },
@@ -161,6 +164,8 @@ var GridAjax = function () {
                 ]
             }
         });
+        
+        $('div.dataTables_filter input').attr('placeholder', 'Enter tag name.');
     }
 
     return {
@@ -170,11 +175,6 @@ var GridAjax = function () {
         }
     };
 }();
-
-jQuery(document).ready(function() {
-	App.init();
-    GridAjax.init();
-});
 
 var App = function () {
 
@@ -202,16 +202,11 @@ var App = function () {
         }
         
     }
-    
-    var handleTags = function () {
-    	$('#tags').tagsInput();
-    }
 
     return {
 
         init: function () {
             handleInit();
-            handleTags();
         },
 
         isIE8: function () {
@@ -229,3 +224,8 @@ var App = function () {
     };
 
 }();
+
+jQuery(document).ready(function() {
+	App.init();
+    GridAjax.init();
+});

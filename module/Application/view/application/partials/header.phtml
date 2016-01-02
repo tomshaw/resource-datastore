@@ -4,14 +4,12 @@
     <h2 class="project-tagline">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</h2>
   </div>
   <a href="https://github.com/tomshaw/resource-datastore" class="btn btn-default">View on GitHub</a> 
-  <a class="btn btn-default js-btn">Quick Add</a> 
   <?php if ($this->service->hasIdentity()): ?>
   <a href="/logout" class="btn btn-default">Logout</a>
-  <?php if ($this->service->getIdentity()->identity == 4): ?>
-  <a href="/admin" class="btn btn-default">Admin</a>
+  <?php if ($this->service->getIdentity()->identity == \Application\Controller\Plugin\AccessControl::ACLROLE_ADMINISTRATOR): ?>
+  <a href="/admin" class="btn btn-default">Administration</a>
   <?php endif; ?>
   <?php else: ?>
   <a href="/login" class="btn btn-default">Login</a>
   <?php endif; ?>
-  <a href="mailto:me@home.net" class="btn btn-default">Email</a> 
 </section>

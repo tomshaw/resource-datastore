@@ -150,13 +150,19 @@ class ResourceTable
             $select->where->literal('LOWER(resource.title) LIKE "%'.strtolower($data['title']).'%"')->or->literal('LOWER(resource.description) LIKE "%'.strtolower($data['title']).'%"');
         }
         
-        if (array_key_exists('category', $data) && !empty($data['category'])) {
+        if (array_key_exists('category', $data) && !empty($data['category']) && $data['category'] != 'all') {
             $row = $this->fetchRow(array('id'=>intval($data['category'])));
-            if (is_array($data['category'])) {
-                $select->where->in('resource.parent_id', $data['category']);
-            } else {
+            if ($row) {
                 $select->where->lessThanOrEqualTo('resource.right_id', intval($row->right_id));
                 $select->where->greaterThanOrEqualTo('resource.left_id', intval($row->left_id));
+            }
+        }
+        
+        if (array_key_exists('search', $data) && !empty($data['search']['value'])) {
+            if (sizeof($ids = $this->searchTags($data['search']['value']))) {
+                $select->where->in('resource.id', array_keys($ids));
+            } else { // bug out...
+                $select->where->lessThan('resource.id', 0);
             }
         }
         
@@ -171,9 +177,33 @@ class ResourceTable
         
         $select->order(array($data['order'] . ' ' . strtoupper($data['sort'])));
         
+        //$this->dump($select->getSqlString($this->getAdapter()->getPlatform()));
+        
         $statement = $sql->prepareStatementForSqlObject($select);
         
         return iterator_to_array($statement->execute());
+    }
+    
+    public function searchTags($string)
+    {
+        $sql = new Sql($this->tableGateway->getAdapter());
+    
+        $select = $sql->select()->from(array('tag_resource' => 'tag_resource'))->columns(array('resource_id'));
+    
+        $select->join(array('tag' => 'tag'), 'tag.id = tag_resource.tag_id', [], Select::JOIN_INNER);
+    
+        $select->where->literal('LOWER(tag.name) LIKE "%'.strtolower($string).'%"');
+    
+        $statement = $sql->prepareStatementForSqlObject($select);
+    
+        $rows = iterator_to_array($statement->execute());
+        
+        $data = array();
+        foreach ($rows as $row) {
+            $data[$row['resource_id']] = $row['resource_id'];
+        }
+        
+        return sizeof($data) ? $data : null;
     }
 
     public function getQueryForParent($parentId)
@@ -200,13 +230,12 @@ class ResourceTable
     
         $select = $sql->select()
             ->from(array('resource' => 'resource'))
-            ->columns(array('*', new Predicate\Expression('DATE_FORMAT(resource.created_at, "%b %d, %Y") AS created_at'), new Predicate\Expression('SUBSTRING_INDEX(resource.description, ".", 1) AS teaser')))
+            ->columns(array(
+                '*', 
+                new Predicate\Expression('DATE_FORMAT(resource.created_at, "%b %d, %Y") AS created_at'), 
+                new Predicate\Expression('SUBSTRING_INDEX(resource.description, ".", 1) AS teaser')
+            ))
             ->join(array('user' => 'user'), 'user.id = resource.user_id', array('username'), Select::JOIN_INNER);
-        
-        // new Predicate\Expression('IF(resource.parent_id = 0,"-","resource2.title")')
-        if (isset($data['parent_id']) && !empty($data['parent_id']) && $data['parent_id']>0) {
-            $select->join(array('resource2' => 'resource'), 'resource.parent_id = resource2.id', array('category'=>'title'), Select::JOIN_INNER);
-        }
         
         if (isset($data['parent_id']) && !empty($data['parent_id'])) {
             $select->where->equalTo('resource.parent_id', intval($data['parent_id']));
@@ -229,9 +258,7 @@ class ResourceTable
     
         if (array_key_exists('category', $data) && !empty($data['category'])) {
             $row = $this->fetchRow(array('id'=>intval($data['category'])));
-            if (is_array($data['category'])) {
-                $select->where->in('resource.parent_id', $data['category']);
-            } else {
+            if ($row) {
                 $select->where->lessThanOrEqualTo('resource.right_id', intval($row->right_id));
                 $select->where->greaterThanOrEqualTo('resource.left_id', intval($row->left_id));
             }
@@ -247,6 +274,8 @@ class ResourceTable
         }
     
         $select->order(array($data['order'] . ' ' . strtoupper($data['sort'])));
+        
+        //$this->dump($select->getSqlString($this->getAdapter()->getPlatform()));
     
         $statement = $sql->prepareStatementForSqlObject($select);
     

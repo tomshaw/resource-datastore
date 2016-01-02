@@ -61,9 +61,11 @@ module.exports = function (grunt) {
           'public/vendor/toastr/toastr.js',
           'public/vendor/pikaday/pikaday.js',
           'public/vendor/jquery.tagsinput/src/jquery.tagsinput.js',
+          'public/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.js',
+          
           'public/vendor/datatables/media/js/jquery.dataTables.js',
           'public/vendor/datatables/media/js/dataTables.bootstrap.js',
-          'public/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.js',
+          
           'public/scripts/app.js'
         ],
         dest: 'public/js/script.js'
@@ -79,8 +81,10 @@ module.exports = function (grunt) {
              'public/vendor/toastr/toastr.css',
              'public/vendor/pikaday/css/pikaday.css',
              //'public/vendor/jquery.tagsinput/src/jquery.tagsinput.css',
+             
              'public/vendor/datatables/media/css/jquery.dataTables.css',
              'public/vendor/datatables/media/css/dataTables.bootstrap.css',
+             
              'public/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.css',
              'public/css/reset.css', 
              'public/css/tools.css', 

@@ -24,6 +24,12 @@ body {
     line-height: 1.5;
 }
 
+div, svg, input, select, textarea, span, img, table, label, td, th, p, a, button, ul, code, pre, li {
+	-webkit-border-radius: 0 !important;
+	-moz-border-radius: 0 !important;
+	border-radius: 0 !important;
+}
+
 a {
     color: #1e6bb8;
     text-decoration: none;
@@ -60,9 +66,53 @@ blockquote {
     border-left: 0.3rem solid #dce6f0;
 }
 
+/* ==========================================================================
+Grid styles.
+========================================================================== */
+
 table .filter .form-control {
 	width: 100% !important;
 }
+
+.table-data-table a.btn {
+    color: #FFF;
+    background-color: #32c5d2;
+    border-color: #32c5d2;
+}
+
+/*.table-data-table .filter .form-control {
+	width: 100% !important;
+}*/
+
+.margin-bottom-5 {
+	margin: 0 0 5px 0;
+}
+
+.filter-wrap {
+	margin: 5px 0;
+}
+
+.input-inline {
+	display: inline-block;
+	width: auto;
+	vertical-align: middle;
+}
+
+.input-mini {
+	width: 45px !important;
+}
+
+.table th {
+  font-size: 13px; }
+	
+.table td {
+  font-size: 12px; }
+
+.table.table-bordered thead > tr > th {
+  border-bottom: 0; }
+
+.table td .img-responsive {
+  width: 100%; }
 
 /* ==========================================================================
 Button
@@ -97,7 +147,8 @@ Page header
 
 .page-header {
     text-align: center;
-	padding: 2rem 0.5rem 1em 0.5em;
+	padding: 1.5rem 0.5rem 1em 0.5em;
+	margin: 20px 0 40px 0;
 	.inner {
 		max-width: 585px; 
 		margin: auto;

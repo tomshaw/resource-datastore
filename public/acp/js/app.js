@@ -34,8 +34,7 @@ var App = function () {
             	    console.log(resp);
                 });
             });
-        }
-        
+        } 
     }
     
     var handleMenu = function () {

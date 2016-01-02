@@ -6,8 +6,9 @@ use Zend\Mvc\MvcEvent;
 
 class Module
 {
+
     public function onBootstrap(MvcEvent $e)
-    { 
+    {
         $eventManager = $e->getApplication()->getEventManager();
         
         $eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_ROUTE, array($this, 'handleLayout'), 2);
@@ -17,7 +18,7 @@ class Module
     public function handleLayout(MvcEvent $e)
     {
         $sharedManager = $e->getApplication()->getEventManager()->getSharedManager();
-        $sharedManager->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function($e) {
+        $sharedManager->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function ($e) {
             $controller = $e->getTarget();
             $controllerClass = get_class($controller);
             $moduleNamespace = substr($controllerClass, 0, strpos($controllerClass, '\\'));
@@ -26,11 +27,11 @@ class Module
             }
         }, 100);
     }
-    
+
     public function handlePartials(MvcEvent $e)
     {
         $sharedManager = $e->getApplication()->getEventManager()->getSharedManager();
-        $sharedManager->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function($e) {
+        $sharedManager->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function ($e) {
             $controller = $e->getTarget();
             $controllerClass = get_class($controller);
             $moduleNamespace = substr($controllerClass, 0, strpos($controllerClass, '\\'));
@@ -66,13 +67,17 @@ class Module
     {
         return array(
             'factories' => array(
-                'AdminNavbar' => function($sm) {
+                'AdminNavbar' => function ($sm) {
                     $helper = new \Admin\Controller\Plugin\Navbar();
+                    $helper->setServiceLocator($sm->getServiceLocator());
+                    return $helper;
+                },
+                'Dashboard' => function ($sm) {
+                    $helper = new \Admin\Controller\Plugin\Dashboard();
                     $helper->setServiceLocator($sm->getServiceLocator());
                     return $helper;
                 }
             )
         );
     }
-    
 }

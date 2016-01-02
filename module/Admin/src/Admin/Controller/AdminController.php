@@ -49,11 +49,6 @@ class AdminController extends AbstractActionController
 	    $vm = new ViewModel();
 	    
 	    $vm->setVariable('activity', $this->getActivityTable()->fetchLatest());
-
-	    $vm->setVariable('total_categories', $this->getDashboardTable()->fetchCountResources(ResourceModel::NODE_TYPE_CATEGORY));
-	    $vm->setVariable('total_resources', $this->getDashboardTable()->fetchCountResources(ResourceModel::NODE_TYPE_RESOURCE));
-	    $vm->setVariable('total_views', $this->getDashboardTable()->fetchTotalViews());
-	    $vm->setVariable('total_tags', $this->getDashboardTable()->fetchTotalTags());
 	    
 	    return $vm;
 	}
@@ -67,19 +62,21 @@ class AdminController extends AbstractActionController
 	    $errors = array();
 	
 	    if (!$request->isXmlHttpRequest()) {
-	        //$errors[] = 'Invalid access method.';
+	        $errors[] = 'Invalid access XmlHttpRequest method.';
 	    }
 	
 	    if (sizeof($errors)) {
 	        $response->setStatusCode(200)->setContent(Json::encode(array('errors'=>$errors)));
 	        return $response;
 	    }
-	
-	    $results = $this->getDashboardTable()->fetchTopTags();
+	    
+	    $data = array();
+	    $data['top_tags'] = $this->dashboard()->fetchTopTags();
+	    $data['widget_totals'] = $this->dashboard()->fetchWidgetTotals();
 	
 	    $response->setStatusCode(200);
 	
-	    $response->setContent(Json::encode($results));
+	    $response->setContent(Json::encode($data));
 	
 	    return $response;
 	}

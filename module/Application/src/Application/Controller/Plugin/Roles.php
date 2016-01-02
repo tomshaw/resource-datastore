@@ -9,13 +9,7 @@ class Roles extends AbstractPlugin
 {
     protected $roles = array();
     
-    const STRING_OUT_OF_RANGE = 'na';
-    
-    public function getRole($id)
-    {
-        $roles = array_keys($this->getRoles());
-        return (isset($roles[$id])) ? ucfirst($roles[$id]) : self::STRING_OUT_OF_RANGE;
-    }
+    const STRING_OUT_OF_RANGE = 'OUT_OF_RANGE';
     
     protected function getRoles()
     {
@@ -24,4 +18,11 @@ class Roles extends AbstractPlugin
         }
         return $this->roles;
     }
+    
+    public function getRole($id)
+    {
+        $roles = array_keys($this->getRoles());
+        return (isset($roles[$id])) ? ucfirst($roles[$id]) : self::STRING_OUT_OF_RANGE;
+    }
+    
 }
