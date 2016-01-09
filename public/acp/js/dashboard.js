@@ -138,24 +138,24 @@ var Dashboard = function () {
         var el = $('#monthly_activity');
 
         if (el.size() === 0) return;
-        
+
         $('.portlet-loading').hide();
         $('.portlet-content').show();
 
         function drawChart(obj) {
 
             var plotdata = [];
-            
+
             var chartData = obj.yearly_activity,
                 keys = Object.keys(chartData);
 
             if (typeof chartData[keys[0]] !== 'undefined') {
-            	
-            	var mapData = chartData[keys[0]].map(function (key) {
-                	return [key['monthname'], key['total']];
+
+                var mapData = chartData[keys[0]].map(function (key) {
+                    return [key['monthname'], key['total']];
                 });
-            	
-            	plotdata.push({
+
+                plotdata.push({
                     label: keys[0] + ' - Resources',
                     data: mapData,
                     lines: {
@@ -184,17 +184,17 @@ var Dashboard = function () {
                     color: '#9ACAE6',
                     shadowSize: 0
                 });
-            	
+
             }
-            
+
             if (typeof chartData[keys[1]] !== 'undefined') {
-            	
-            	var mapData = chartData[keys[1]].map(function (key) {
-                	return [key['monthname'], key['total']];
+
+                var mapData = chartData[keys[1]].map(function (key) {
+                    return [key['monthname'], key['total']];
                 });
-            	
-            	plotdata.push({
-            		label: keys[1] + ' - Resources',
+
+                plotdata.push({
+                    label: keys[1] + ' - Resources',
                     data: mapData,
                     lines: {
                         fill: 0.2,
@@ -263,9 +263,9 @@ var Dashboard = function () {
                 $("#x").text(pos.x.toFixed(2));
                 $("#y").text(pos.y.toFixed(2));
                 if (item) {
-                	$("#tooltip").remove();
-                	var x = item.datapoint[0].toFixed(2),
-                	    y = item.datapoint[1].toFixed(2);
+                    $("#tooltip").remove();
+                    var x = item.datapoint[0].toFixed(2),
+                        y = item.datapoint[1].toFixed(2);
                     Dashboard.showChartTooltip(item.pageX, item.pageY, item.datapoint[0], item.datapoint[1] + ' - Records');
                 }
             });
@@ -279,7 +279,7 @@ var Dashboard = function () {
         drawChart(dataSets);
 
     };
-    
+
     var initWeeklyActivity = function () {
 
         if (!jQuery.plot) return;
@@ -287,24 +287,24 @@ var Dashboard = function () {
         var el = $('#weekly_activity');
 
         if (el.size() === 0) return;
-        
+
         $('.portlet-loading').hide();
         $('.portlet-content').show();
 
         function drawChart(obj) {
 
             var plotdata = [];
-            
+
             var chartData = obj.weekly_activity,
                 keys = Object.keys(chartData);
 
             if (typeof chartData[keys[0]] !== 'undefined') {
-            	
-            	var mapData = chartData[keys[0]].map(function (key) {
-                	return [key['week'], key['total']];
+
+                var mapData = chartData[keys[0]].map(function (key) {
+                    return [key['week'], key['total']];
                 });
-            	
-            	plotdata.push({
+
+                plotdata.push({
                     label: keys[0] + ' - Resources',
                     data: mapData,
                     lines: {
@@ -333,17 +333,17 @@ var Dashboard = function () {
                     color: '#9ACAE6',
                     shadowSize: 0
                 });
-            	
+
             }
-            
+
             if (typeof chartData[keys[1]] !== 'undefined') {
-            	
-            	var mapData = chartData[keys[1]].map(function (key) {
-                	return [key['week'], key['total']];
+
+                var mapData = chartData[keys[1]].map(function (key) {
+                    return [key['week'], key['total']];
                 });
-            	
-            	plotdata.push({
-            		label: keys[1] + ' - Resources',
+
+                plotdata.push({
+                    label: keys[1] + ' - Resources',
                     data: mapData,
                     lines: {
                         fill: 0.2,
@@ -412,9 +412,9 @@ var Dashboard = function () {
                 $("#x").text(pos.x.toFixed(2));
                 $("#y").text(pos.y.toFixed(2));
                 if (item) {
-                	$("#tooltip").remove();
-                	var x = item.datapoint[0].toFixed(2),
-                	    y = item.datapoint[1].toFixed(2);
+                    $("#tooltip").remove();
+                    var x = item.datapoint[0].toFixed(2),
+                        y = item.datapoint[1].toFixed(2);
                     Dashboard.showChartTooltip(item.pageX, item.pageY, item.datapoint[0], item.datapoint[1] + ' - Records');
                 }
             });
