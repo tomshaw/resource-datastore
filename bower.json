@@ -21,6 +21,9 @@
     "Flot": "flot#~0.8.3",
     "jquery.easy-pie-chart": "~2.1.6",
     "counterup": "~1.0.0",
-    "waypoints": "~4.0.0"
+    "waypoints": "~4.0.0",
+    "Chart.js": "~1.0.2",
+    "amcharts": "~3.15.2",
+    "morris.js": "~0.5.1"
   }
 }

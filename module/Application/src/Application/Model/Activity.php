@@ -21,4 +21,16 @@ class Activity
         $this->created_at = (isset($data['created_at'])) ? $data['created_at'] : null;
     }
     
+    public static function encodeIp($dotquadIp)
+    {
+        $sep = explode('.', $dotquadIp);
+        return sprintf('%02x%02x%02x%02x', $sep[0], $sep[1], $sep[2], $sep[3]);
+    }
+    
+    public static function decodeIp($intIp)
+    {
+        $hexipbang = explode('.', chunk_split($intIp, 2, '.'));
+        return hexdec($hexipbang[0]). '.' . hexdec($hexipbang[1]) . '.' . hexdec($hexipbang[2]) . '.' . hexdec($hexipbang[3]);
+    }
+    
 }

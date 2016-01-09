@@ -22,6 +22,9 @@ var Dashboard = function () {
             return;
         }
 
+        $('.portlet-loading').hide();
+        $('.portlet-content').show();
+
         AmCharts.makeChart("top-tags", {
             "type": "pie",
             "theme": "light",
@@ -40,11 +43,14 @@ var Dashboard = function () {
     }
 
     var initYearlyActivity = function () {
-    	
+
         if (typeof (AmCharts) === 'undefined' || $('#yearly_activity').size() === 0) {
             return;
         }
-    	
+
+        $('.portlet-loading').hide();
+        $('.portlet-content').show();
+
         var chart = AmCharts.makeChart("yearly_activity", {
             "type": "serial",
             "theme": "light",
@@ -132,93 +138,93 @@ var Dashboard = function () {
         var el = $('#monthly_activity');
 
         if (el.size() === 0) return;
+        
+        $('.portlet-loading').hide();
+        $('.portlet-content').show();
 
-        function showChartTooltip(x, y, xValue, yValue) {
-            $('<div id="tooltip" class="chart-tooltip">' + yValue + '<\/div>').css({
-                position: 'absolute',
-                display: 'none',
-                top: y - 40,
-                left: x - 40,
-                border: '0px solid #ccc',
-                padding: '2px 6px',
-                'background-color': '#fff'
-            }).appendTo("body").fadeIn(200);
-        }
+        function drawChart(obj) {
 
-        var data = [];
-        var totalPoints = 250;
+            var plotdata = [];
+            
+            var chartData = obj.yearly_activity,
+                keys = Object.keys(chartData);
 
-        function getRandomData() {
-            if (data.length > 0) data = data.slice(1);
-            // do a random walk
-            while (data.length < totalPoints) {
-                var prev = data.length > 0 ? data[data.length - 1] : 50;
-                var y = prev + Math.random() * 10 - 5;
-                if (y < 0) y = 0;
-                if (y > 100) y = 100;
-                data.push(y);
+            if (typeof chartData[keys[0]] !== 'undefined') {
+            	
+            	var mapData = chartData[keys[0]].map(function (key) {
+                	return [key['monthname'], key['total']];
+                });
+            	
+            	plotdata.push({
+                    label: keys[0] + ' - Resources',
+                    data: mapData,
+                    lines: {
+                        fill: 0.2,
+                        lineWidth: 0,
+                    },
+                    color: ['#BAD9F5']
+                }, {
+                    data: mapData,
+                    points: {
+                        show: true,
+                        fill: true,
+                        radius: 4,
+                        fillColor: "#9ACAE6",
+                        lineWidth: 2
+                    },
+                    color: '#9ACAE6',
+                    shadowSize: 1
+                }, {
+                    data: mapData,
+                    lines: {
+                        show: true,
+                        fill: false,
+                        lineWidth: 3
+                    },
+                    color: '#9ACAE6',
+                    shadowSize: 0
+                });
+            	
             }
-            var res = [];
-            for (var i = 0; i < data.length; ++i) res.push([i, data[i]])
-            return res;
-        }
+            
+            if (typeof chartData[keys[1]] !== 'undefined') {
+            	
+            	var mapData = chartData[keys[1]].map(function (key) {
+                	return [key['monthname'], key['total']];
+                });
+            	
+            	plotdata.push({
+            		label: keys[1] + ' - Resources',
+                    data: mapData,
+                    lines: {
+                        fill: 0.2,
+                        lineWidth: 0,
+                    },
+                    color: ['#a13437']
+                }, {
+                    data: mapData,
+                    points: {
+                        show: true,
+                        fill: true,
+                        radius: 4,
+                        fillColor: "#a13437",
+                        lineWidth: 2
+                    },
+                    color: '#a13437',
+                    shadowSize: 1
+                }, {
+                    data: mapData,
+                    lines: {
+                        show: true,
+                        fill: false,
+                        lineWidth: 3
+                    },
+                    color: '#a13437',
+                    shadowSize: 0
+                });
+            }
 
-        function randValue() {
-            return (Math.floor(Math.random() * (1 + 50 - 20))) + 10;
-        }
-
-        var previousPoint2 = null;
-        $('#monthly_activity_loading').hide();
-        $('#monthly_activity_content').show();
-
-        var data1 = [
-            ['JAN', 600],
-            ['FEB', 1100],
-            ['MAR', 1200],
-            ['APR', 860],
-            ['MAY', 1200],
-            ['JUN', 1450],
-            ['JUL', 1800],
-            ['AUG', 1200],
-            ['SEP', 600],
-            ['OCT', 390],
-            ['NOV', 920],
-            ['DEC', 1110],
-        ];
-
-        var plot_statistics = $.plot(el,
-
-            [{
-                data: data1,
-                lines: {
-                    fill: 0.2,
-                    lineWidth: 0,
-                },
-                color: ['#BAD9F5']
-            }, {
-                data: data1,
-                points: {
-                    show: true,
-                    fill: true,
-                    radius: 4,
-                    fillColor: "#9ACAE6",
-                    lineWidth: 2
-                },
-                color: '#9ACAE6',
-                shadowSize: 1
-            }, {
-                data: data1,
-                lines: {
-                    show: true,
-                    fill: false,
-                    lineWidth: 3
-                },
-                color: '#9ACAE6',
-                shadowSize: 0
-            }],
-
-            {
-
+            var options = {
                 xaxis: {
                     tickLength: 0,
                     tickDecimals: 0,
@@ -232,7 +238,7 @@ var Dashboard = function () {
                     }
                 },
                 yaxis: {
-                    ticks: 5,
+                    ticks: 10,
                     tickDecimals: 0,
                     tickColor: "#eee",
                     font: {
@@ -249,25 +255,177 @@ var Dashboard = function () {
                     borderColor: "#eee",
                     borderWidth: 1
                 }
+            };
+
+            $.plot(el, plotdata, options);
+
+            el.bind("plothover", function (event, pos, item) {
+                $("#x").text(pos.x.toFixed(2));
+                $("#y").text(pos.y.toFixed(2));
+                if (item) {
+                	$("#tooltip").remove();
+                	var x = item.datapoint[0].toFixed(2),
+                	    y = item.datapoint[1].toFixed(2);
+                    Dashboard.showChartTooltip(item.pageX, item.pageY, item.datapoint[0], item.datapoint[1] + ' - Records');
+                }
             });
 
-        el.bind("plothover", function (event, pos, item) {
-            $("#x").text(pos.x.toFixed(2));
-            $("#y").text(pos.y.toFixed(2));
-            if (item) {
-                if (previousPoint2 != item.dataIndex) {
-                    previousPoint2 = item.dataIndex;
-                    $("#tooltip").remove();
-                    var x = item.datapoint[0].toFixed(2),
-                        y = item.datapoint[1].toFixed(2);
-                    showChartTooltip(item.pageX, item.pageY, item.datapoint[0], item.datapoint[1] + 'M$');
-                }
-            }
-        });
+            el.bind("mouseleave", function () {
+                $("#tooltip").remove();
+            });
 
-        el.bind("mouseleave", function () {
-            $("#tooltip").remove();
-        });
+        }
+
+        drawChart(dataSets);
+
+    };
+    
+    var initWeeklyActivity = function () {
+
+        if (!jQuery.plot) return;
+
+        var el = $('#weekly_activity');
+
+        if (el.size() === 0) return;
+        
+        $('.portlet-loading').hide();
+        $('.portlet-content').show();
+
+        function drawChart(obj) {
+
+            var plotdata = [];
+            
+            var chartData = obj.weekly_activity,
+                keys = Object.keys(chartData);
+
+            if (typeof chartData[keys[0]] !== 'undefined') {
+            	
+            	var mapData = chartData[keys[0]].map(function (key) {
+                	return [key['week'], key['total']];
+                });
+            	
+            	plotdata.push({
+                    label: keys[0] + ' - Resources',
+                    data: mapData,
+                    lines: {
+                        fill: 0.2,
+                        lineWidth: 0,
+                    },
+                    color: ['#BAD9F5']
+                }, {
+                    data: mapData,
+                    points: {
+                        show: true,
+                        fill: true,
+                        radius: 4,
+                        fillColor: "#9ACAE6",
+                        lineWidth: 2
+                    },
+                    color: '#9ACAE6',
+                    shadowSize: 1
+                }, {
+                    data: mapData,
+                    lines: {
+                        show: true,
+                        fill: false,
+                        lineWidth: 3
+                    },
+                    color: '#9ACAE6',
+                    shadowSize: 0
+                });
+            	
+            }
+            
+            if (typeof chartData[keys[1]] !== 'undefined') {
+            	
+            	var mapData = chartData[keys[1]].map(function (key) {
+                	return [key['week'], key['total']];
+                });
+            	
+            	plotdata.push({
+            		label: keys[1] + ' - Resources',
+                    data: mapData,
+                    lines: {
+                        fill: 0.2,
+                        lineWidth: 0,
+                    },
+                    color: ['#a13437']
+                }, {
+                    data: mapData,
+                    points: {
+                        show: true,
+                        fill: true,
+                        radius: 4,
+                        fillColor: "#a13437",
+                        lineWidth: 2
+                    },
+                    color: '#a13437',
+                    shadowSize: 1
+                }, {
+                    data: mapData,
+                    lines: {
+                        show: true,
+                        fill: false,
+                        lineWidth: 3
+                    },
+                    color: '#a13437',
+                    shadowSize: 0
+                });
+            }
+
+            var options = {
+                xaxis: {
+                    tickLength: 0,
+                    tickDecimals: 0,
+                    mode: "categories",
+                    min: 0,
+                    font: {
+                        lineHeight: 18,
+                        style: "normal",
+                        variant: "small-caps",
+                        color: "#6F7B8A"
+                    }
+                },
+                yaxis: {
+                    ticks: 10,
+                    tickDecimals: 0,
+                    tickColor: "#eee",
+                    font: {
+                        lineHeight: 14,
+                        style: "normal",
+                        variant: "small-caps",
+                        color: "#6F7B8A"
+                    }
+                },
+                grid: {
+                    hoverable: true,
+                    clickable: true,
+                    tickColor: "#eee",
+                    borderColor: "#eee",
+                    borderWidth: 1
+                }
+            };
+
+            $.plot(el, plotdata, options);
+
+            el.bind("plothover", function (event, pos, item) {
+                $("#x").text(pos.x.toFixed(2));
+                $("#y").text(pos.y.toFixed(2));
+                if (item) {
+                	$("#tooltip").remove();
+                	var x = item.datapoint[0].toFixed(2),
+                	    y = item.datapoint[1].toFixed(2);
+                    Dashboard.showChartTooltip(item.pageX, item.pageY, item.datapoint[0], item.datapoint[1] + ' - Records');
+                }
+            });
+
+            el.bind("mouseleave", function () {
+                $("#tooltip").remove();
+            });
+
+        }
+
+        drawChart(dataSets);
 
     };
 
@@ -284,7 +442,8 @@ var Dashboard = function () {
         init: function () {
             initWidgetTotals();
             initTopTags();
-            initMonthlyActivity();
+            //initMonthlyActivity();
+            initWeeklyActivity();
             initYearlyActivity();
         },
 
@@ -324,7 +483,19 @@ var Dashboard = function () {
 
         randValue: function () {
             return (Math.floor(Math.random() * (1 + 50 - 20))) + 10;
-        }
+        },
+
+        showChartTooltip: function (x, y, xValue, yValue) {
+            $('<div id="tooltip" class="chart-tooltip">' + yValue + '<\/div>').css({
+                position: 'absolute',
+                display: 'none',
+                top: y - 40,
+                left: x - 40,
+                border: '0px solid #ccc',
+                padding: '2px 6px',
+                'background-color': '#fff'
+            }).appendTo("body").fadeIn(200);
+        },
 
     };
 

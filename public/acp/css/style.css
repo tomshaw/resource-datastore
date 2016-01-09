@@ -29,6 +29,7 @@ div, svg, input, select, textarea, span, img, table, label, td, th, p, a, button
 /* ==========================================================================
 General typography
 ========================================================================== */
+
 h1, h2, h3, h4, h5, h6 {
 	font-family: "Open Sans", sans-serif;
 	font-weight: 300;
@@ -60,55 +61,6 @@ h6 {
 
 h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
 	color: #444444;
-}
-
-/* ==========================================================================
-Scrollbar.
-========================================================================== */
-
-/*
-.btn-primary {
-    color: #fff;
-    background-color: #337ab7;
-    border-color: #2e6da4;
-}
-
-.btn {
-    border: none;
-    border-radius: 0;
-}*/
-
-/*.table a.btn {
-	padding: 0;
-	margin: 0;
-}*/
-
-.table-data-table a.btn {
-    color: #FFF;
-    background-color: #32c5d2;
-    border-color: #32c5d2;
-}
-
-/*.table-data-table .filter .form-control {
-	width: 100% !important;
-}*/
-
-.margin-bottom-5 {
-	margin: 0 0 5px 0;
-}
-
-.filter-wrap {
-	margin: 5px 0;
-}
-
-.input-inline {
-	display: inline-block;
-	width: auto;
-	vertical-align: middle;
-}
-
-.input-mini {
-	width: 45px !important;
 }
 
 /* ==========================================================================
@@ -279,18 +231,22 @@ Scrollbar.
     background-color: #e7505a;
 }
 
-/***
-Customized Bootstrap Tables
-***/
-.table td,
-.table th {
-  font-size: 14px; }
 
-.table.table-bordered thead > tr > th {
-  border-bottom: 0; }
-
-.table td .img-responsive {
-  width: 100%; }
+.btn.green:not(.btn-outline).active, 
+.btn.green:not(.btn-outline).focus, 
+.btn.green:not(.btn-outline):active, 
+.btn.green:not(.btn-outline):focus, 
+.btn.green:not(.btn-outline):hover, 
+.open>.btn.green:not(.btn-outline).dropdown-toggle {
+    color: #FFF;
+    background-color: #26a1ab;
+    border-color: #26a1ab;
+}
+.btn.green:not(.btn-outline) {
+    color: #FFF;
+    background-color: #32c5d2;
+    border-color: #32c5d2;
+}
 
 /* ==========================================================================
 Scrollbar.
@@ -465,24 +421,42 @@ Portlets
     font-size: 13px;
     line-height: 1.5;
 }
-.btn.green:not(.btn-outline).active, 
-.btn.green:not(.btn-outline).focus, 
-.btn.green:not(.btn-outline):active, 
-.btn.green:not(.btn-outline):focus, 
-.btn.green:not(.btn-outline):hover, 
-.open>.btn.green:not(.btn-outline).dropdown-toggle {
-    color: #FFF;
-    background-color: #26a1ab;
-    border-color: #26a1ab;
-}
-.btn.green:not(.btn-outline) {
-    color: #FFF;
-    background-color: #32c5d2;
-    border-color: #32c5d2;
+
+
+
+/* ==========================================================================
+Portlets
+========================================================================== */
+
+.portlet-body {
+	position: relative;
 }
 
+.portlet-loading {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: rgba(255,255,255,0.9);
+	text-align: center;
+	z-index: 1;
+}
 
+.portlet-loading img {
+	margin: 0 auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
 
+.portlet-content {
+    display: none;
+}
+
+/* ==========================================================================
+Portlets
+========================================================================== */
 
 .portlet>.portlet-title>.nav-tabs {
 	background: none;
@@ -760,7 +734,47 @@ Widget Thumb
 }
 
 /* ==========================================================================
-Widget Thumb
+ Datatables Customized Bootstrap Tables
+========================================================================== */
+
+.table td, .table th {
+	font-size: 14px;
+}
+
+.table.table-bordered thead>tr>th {
+	border-bottom: 0;
+}
+
+.table td .img-responsive {
+	width: 100%;
+}
+
+.table-data-table a.btn {
+	color: #FFF;
+	background-color: #32c5d2;
+	border-color: #32c5d2;
+}
+
+.margin-bottom-5 {
+	margin: 0 0 5px 0;
+}
+
+.filter-wrap {
+	margin: 5px 0;
+}
+
+.input-inline {
+	display: inline-block;
+	width: auto;
+	vertical-align: middle;
+}
+
+.input-mini {
+	width: 45px !important;
+}
+
+/* ==========================================================================
+Datatables
 ========================================================================== */
 
 /*table.dataTable thead .sorting:after,
@@ -768,12 +782,12 @@ table.dataTable thead .sorting_asc:after,
 table.dataTable thead .sorting_desc:after,
 table.dataTable thead .sorting_asc_disabled:after,
 table.dataTable thead .sorting_desc_disabled:after {
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
-  display: block;
-  font-family: 'Glyphicons Halflings';
-  opacity: 0.5;
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    display: block;
+    font-family: 'Glyphicons Halflings';
+    opacity: 0.5;
 }*/
 
 table.dataTable thead .sorting,
@@ -784,119 +798,163 @@ table.dataTable thead .sorting_desc_disabled {
     background-image: none;
 }
 
-/***
-Datatables general customization
-***/
-.table-checkable tr > th:first-child,
-.table-checkable tr > td:first-child {
-  text-align: center;
-  max-width: 50px;
-  min-width: 40px;
-  padding-left: 0;
-  padding-right: 0; }
+/* ==========================================================================
+Datatables
+========================================================================== */
 
-table.dataTable thead th,
-table.dataTable thead td {
-  border-bottom: 2px solid #e7ecf1;
-  outline: none !important; }
-
-table.dataTable.no-footer {
-  border-bottom-color: #e7ecf1; }
-
-table.dataTable tr.heading > th {
-  background-color: #fbfcfd; }
-
-table.dataTable td.sorting_1,
-table.dataTable td.sorting_2,
-table.dataTable td.sorting_3,
-table.dataTable th.sorting_1,
-table.dataTable th.sorting_2,
-table.dataTable th.sorting_3 {
-  background: #fbfcfd !important; }
-
-/***
-Extended pagination
-***/
-.paging_bootstrap_extended {
-  margin: 5px 0 0 0 !important;
-  padding: 0 !important;
-  float: none !important;
-  font-size: 13px; }
-
-.dataTables_extended_wrapper {
-  margin-top: 10px; }
-  .dataTables_extended_wrapper .seperator {
-    padding: 0 2px; }
-  .dataTables_extended_wrapper .table.dataTable {
-    margin: 20px 0 !important; }
-  .dataTables_extended_wrapper div.dataTables_paginate,
-  .dataTables_extended_wrapper div.dataTables_length,
-  .dataTables_extended_wrapper div.dataTables_info {
-    display: inline-block;
-    float: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    position: static !important; }
-  .dataTables_extended_wrapper .table-group-actions > span {
-    font-size: 13px; }
-
-@media (max-width: 480px) {
-  .dataTables_extended_wrapper div.dataTables_paginate,
-  .dataTables_extended_wrapper div.dataTables_length,
-  .dataTables_extended_wrapper div.dataTables_info {
-    display: block;
-    margin-bottom: 10px !important; }
-  .dataTables_extended_wrapper .seperator {
-    display: none !important; } }
-
-.dataTables_extended_wrapper div.dataTables_length label {
-  margin: 0 !important;
-  padding: 0 !important;
-  font-size: 13px;
-  float: none !important;
-  display: inline-block !important; }
-
-.table-container .table-actions-wrapper {
-  display: none; }
-
-/***
-Scroller Extension
-***/
-.dataTables_scroll {
-  margin-bottom: 10px; }
-
-.dataTables_scrollHead {
-  border-bottom: 2px solid #e7ecf1 !important; }
-  .dataTables_scrollHead thead th {
-    border-bottom: 0 !important; }
-
-.dataTables_scrollBody {
-  border-bottom: 1px solid #e7ecf1 !important; }
-
-.table-both-scroll .dataTables_scrollBody {
-  border-bottom: 0 !important; }
-
-/***
-Datatables processing
-***/
-.dataTables_wrapper .dataTables_processing {
-  width: 200px;
-  display: inline-block;
-  padding: 7px;
-  left: 50%;
-  margin-left: -100px;
-  margin-top: 10px;
-  text-align: center;
-  color: #3f444a;
-  border: 1px solid #e7ecf1;
-  background: #eef1f5;
-  vertical-align: middle;
-  -webkit-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1); }
-	
-table.dataTable tbody > tr.selected, table.dataTable tbody > tr > .selected {
-    background-color: #f5f5f5;
+.table-checkable tr>th:first-child, 
+.table-checkable tr>td:first-child {
+	text-align: center;
+	max-width: 50px;
+	min-width: 40px;
+	padding-left: 0;
+	padding-right: 0;
 }
 
+table.dataTable thead th, 
+table.dataTable thead td {
+	border-bottom: 2px solid #e7ecf1;
+	outline: none !important;
+}
 
+table.dataTable.no-footer {
+	border-bottom-color: #e7ecf1;
+}
+
+table.dataTable tr.heading>th {
+	background-color: #fbfcfd;
+}
+
+table.dataTable td.sorting_1, table.dataTable td.sorting_2, table.dataTable td.sorting_3,
+table.dataTable th.sorting_1, table.dataTable th.sorting_2, table.dataTable th.sorting_3 {
+	background: #fbfcfd !important;
+}
+
+/* ==========================================================================
+ Datatables Extended Pagination
+========================================================================== */
+
+.paging_bootstrap_extended {
+	margin: 5px 0 0 0 !important;
+	padding: 0 !important;
+	float: none !important;
+	font-size: 13px;
+}
+
+.dataTables_extended_wrapper {
+	margin-top: 10px;
+}
+
+.dataTables_extended_wrapper .seperator {
+	padding: 0 2px;
+}
+
+.dataTables_extended_wrapper .table.dataTable {
+	margin: 20px 0 !important;
+}
+
+.dataTables_extended_wrapper div.dataTables_paginate,
+.dataTables_extended_wrapper div.dataTables_length,
+.dataTables_extended_wrapper div.dataTables_info {
+	display: inline-block;
+	float: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	position: static !important;
+}
+
+.dataTables_extended_wrapper .table-group-actions>span {
+	font-size: 13px;
+}
+
+@media ( max-width : 480px) {
+	.dataTables_extended_wrapper div.dataTables_paginate,
+	.dataTables_extended_wrapper div.dataTables_length,
+	.dataTables_extended_wrapper div.dataTables_info {
+		display: block;
+		margin-bottom: 10px !important;
+	}
+	.dataTables_extended_wrapper .seperator {
+		display: none !important;
+	}
+}
+
+.dataTables_extended_wrapper div.dataTables_length label {
+	margin: 0 !important;
+	padding: 0 !important;
+	font-size: 13px;
+	float: none !important;
+	display: inline-block !important;
+}
+
+.table-container .table-actions-wrapper {
+	display: none;
+}
+
+/* ==========================================================================
+ Datatables Scroller Extension
+========================================================================== */
+
+.dataTables_scroll {
+	margin-bottom: 10px;
+}
+
+.dataTables_scrollHead {
+	border-bottom: 2px solid #e7ecf1 !important;
+}
+
+.dataTables_scrollHead thead th {
+	border-bottom: 0 !important;
+}
+
+.dataTables_scrollBody {
+	border-bottom: 1px solid #e7ecf1 !important;
+}
+
+.table-both-scroll .dataTables_scrollBody {
+	border-bottom: 0 !important;
+}
+
+/* ==========================================================================
+ Datatables Processing
+========================================================================== */
+
+.dataTables_wrapper .dataTables_processing {
+	width: 200px;
+	display: inline-block;
+	padding: 7px;
+	left: 50%;
+	margin-left: -100px;
+	margin-top: 10px;
+	text-align: center;
+	color: #3f444a;
+	border: 1px solid #e7ecf1;
+	background: #eef1f5;
+	vertical-align: middle;
+	-webkit-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+}
+
+table.dataTable tbody>tr.selected, 
+table.dataTable tbody>tr>.selected {
+	background-color: #f5f5f5;
+}
+
+/* ==========================================================================
+ Datatables Processing
+========================================================================== */
+
+.chart-tooltip {
+	clear: both;
+	z-index: 100;
+	background-color: #736e6e !important;
+	padding: 5px !important;
+	color: #fff;
+}
+
+.chart-tooltip .label {
+	clear: both;
+	display: block;
+	margin-bottom: 2px;
+}

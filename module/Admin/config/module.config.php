@@ -50,6 +50,19 @@ return array(
                     )
                 )
             ),
+            'admin-activity-view' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/admin/activity/view/id/:id',
+                    'constraints' => array(
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Activity',
+                        'action' => 'view'
+                    )
+                )
+            ),
             'admin-resource' => array(
                 'type' => 'Segment',
                 'options' => array(

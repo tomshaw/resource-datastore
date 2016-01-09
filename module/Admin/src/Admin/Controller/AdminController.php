@@ -6,8 +6,6 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Json\Json;
 
-use Application\Model\Resource as ResourceModel;
-
 class AdminController extends AbstractActionController
 {
     protected $authservice;
@@ -73,6 +71,8 @@ class AdminController extends AbstractActionController
 	    $data = array();
 	    $data['top_tags'] = $this->dashboard()->fetchTopTags();
 	    $data['widget_totals'] = $this->dashboard()->fetchWidgetTotals();
+	    $data['yearly_activity'] = $this->dashboard()->yearlyGrowth();
+	    $data['weekly_activity'] = $this->dashboard()->weeklyActivity();
 	
 	    $response->setStatusCode(200);
 	
@@ -82,18 +82,18 @@ class AdminController extends AbstractActionController
 	}
 	
 	public function append()
-	{
-        //$this->getServiceLocator()->get('viewhelpermanager')->get('HeadLink')->appendStylesheet('/assets/plugins/autocomplete/css/autocomplete.css');
-	
+	{	
         $this->getServiceLocator()->get('viewhelpermanager')->get('InlineScript')
+            
             ->appendFile('/vendor/Flot/jquery.flot.js')
             ->appendFile('/vendor/Flot/jquery.flot.resize.js')
             ->appendFile('/vendor/Flot/jquery.flot.categories.js')
+            
             ->appendFile('/vendor/amcharts/dist/amcharts/amcharts.js')
-            //->appendFile('/vendor/amcharts/dist/amcharts/plugins/dataloader/dataloader.min.js')
             ->appendFile('/vendor/amcharts/dist/amcharts/themes/light.js')
             ->appendFile('/vendor/amcharts/dist/amcharts/serial.js')
             ->appendFile('/vendor/amcharts/dist/amcharts/pie.js')
+            
             ->appendFile('/acp/js/dashboard.js');
         
 	}

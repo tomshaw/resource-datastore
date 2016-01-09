@@ -32,7 +32,29 @@ class ActivityController extends AbstractActionController
     
     public function dataAction()
     {
+        $request = $this->getRequest();
+        
         $response = $this->getResponse();
+        
+        $post = $this->purify($request->getPost());
+        
+        $actionMessage = array();
+        if (isset($post->action)) {
+        
+            if (sizeof($post->id)) {
+        
+                if ($post->action == 'mark-delete') {
+                    
+                    foreach($post->id as $id) {
+                        $this->getActivityTable()->delete(array('id'=>$id));
+                    }
+                    
+                    $actionMessage = array('message'=> 'A total of '.count($post->id).' records have been deleted successfully.', 'status'=>'OK');
+                    
+                }
+            }
+
+        }
     
         $grid = $this->grid('Admin\Activity\Index', array('-','id','text','username','created_at','-'));
     
@@ -58,7 +80,7 @@ class ActivityController extends AbstractActionController
                 $row['text'],
                 $row['username'],
                 $row['created_at'],
-                '<a href="' . $row['id'] . '" class="btn btn-xs btn-outline blue-steel" data-id="' . $row['id'] . '" title="View Resource" target="_blank"><i class="fa fa-search"></i> View</a>'
+                '<a href="/admin/activity/view/id/' . $row['id'] . '" class="btn btn-xs btn-outline blue-steel" data-id="' . $row['id'] . '" title="View Activity"><i class="fa fa-search"></i> View</a>'
             );
         }
     
@@ -67,12 +89,34 @@ class ActivityController extends AbstractActionController
         $data['draw'] = intval($grid['draw']);
         $data['recordsTotal'] = $paginator->getTotalItemCount();
         $data['recordsFiltered'] = $paginator->getTotalItemCount();
+        
+        if (sizeof($actionMessage)) {
+            $data['actionMessage'] = $actionMessage;
+        }
     
         $response->setStatusCode(200);
     
         $response->setContent(Json::encode($data));
     
         return $response;
+    }
+    
+    public function viewAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', false);
+         
+        if (!($row = $this->getActivityTable()->fetchRow(array('id'=>$id)))) {
+            $this->flashmessenger()->addMessage('Activity row could not be found.');
+            return $this->redirect()->toRoute('admin-activity');
+        }
+    
+        $vm = new ViewModel();
+         
+        $vm->setVariable('token', $this->token()->create());
+    
+        $vm->setVariable('row', $row);
+    
+        return $vm;
     }
     
     public function append()

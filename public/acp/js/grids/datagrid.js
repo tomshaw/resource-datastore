@@ -14,7 +14,7 @@ var Datatable = function() {
 
     var countSelectedRecords = function() {
         var selected = $('tbody > tr > td:nth-child(1) input[type="checkbox"]:checked', table).size();
-        var text = tableOptions.dataTable.language.metronicGroupActions;
+        var text = tableOptions.dataTable.language.groupActions;
         if (selected > 0) {
             $('.table-group-actions > span', tableWrapper).text(text.replace("_TOTAL_", selected));
         } else {
@@ -42,13 +42,10 @@ var Datatable = function() {
                 loadingMessage: 'Loading...',
                 dataTable: {
                     "dom": "<'row'<'col-md-6 col-sm-12'pli><'col-md-6 col-sm-12'<'table-group-actions pull-right'>>r><'table-responsive't><'row'<'col-md-6 col-sm-12'pli><'col-md-6 col-sm-12'>>", // datatable layout
-                    "pageLength": 10, // default records per page
-                    "language": { // language settings
-                        // metronic spesific
-                        "metronicGroupActions": "_TOTAL_ records selected:  ",
-                        "metronicAjaxRequestGeneralError": "Could not complete request. Please check your internet connection",
-
-                        // data tables spesific
+                    "pageLength": 10,
+                    "language": {
+                        "groupActions": "_TOTAL_ records selected:  ",
+                        "ajaxRequestGeneralError": "Could not complete request. Please check your internet connection",
                         "lengthMenu": "<span class='seperator'>|</span>View _MENU_ records",
                         "info": "<span class='seperator'>|</span>Found total _TOTAL_ records",
                         "infoEmpty": "No records found to show",
@@ -63,39 +60,24 @@ var Datatable = function() {
                             "pageOf": "of"
                         }
                     },
-
                     "orderCellsTop": true,
-                    // // numbers, simple, simple_numbers, full, full_numbers
-                    "pagingType": "bootstrap_extended", // pagination type(bootstrap, bootstrap_full_number or bootstrap_extended)
-                    "autoWidth": false, // disable fixed width and enable fluid table
-                    "processing": false, // enable/disable display message box on record load
-                    "serverSide": true, // enable/disable server side ajax loading
+                    "pagingType": "bootstrap_extended", // pagination type(bootstrap, bootstrap_full_number or bootstrap_extended), numbers, simple, simple_numbers, full, full_numbers
+                    "autoWidth": false, 
+                    "processing": false, 
+                    "serverSide": true,
 
-                    "ajax": { // define ajax settings
-                        "url": "", // ajax URL
-                        "type": "POST", // request type
+                    "ajax": {
+                        "url": "",
+                        "type": "POST",
                         "timeout": 20000,
-                        "data": function(data) { // add request parameters before submit
+                        "data": function(data) {
                             $.each(ajaxParams, function(key, value) {
                                 data[key] = value;
                             });
-                            /*App.blockUI({
-                                message: tableOptions.loadingMessage,
-                                target: tableContainer,
-                                overlayColor: 'none',
-                                cenrerY: true,
-                                boxed: true
-                            });*/
                         },
-                        "dataSrc": function(res) { // Manipulate the data returned from the server
-                            if (res.customActionMessage) {
-                                App.alert({
-                                    type: (res.customActionStatus == 'OK' ? 'success' : 'danger'),
-                                    icon: (res.customActionStatus == 'OK' ? 'check' : 'warning'),
-                                    message: res.customActionMessage,
-                                    container: tableWrapper,
-                                    place: 'prepend'
-                                });
+                        "dataSrc": function(res) {
+                            if (res.actionMessage) {
+                            	console.log(res.actionMessage);
                             }
 
                             if (res.customActionStatus) {
@@ -106,43 +88,26 @@ var Datatable = function() {
 
                             if ($('.group-checkable', table).size() === 1) {
                                 $('.group-checkable', table).attr("checked", false);
-                                //$.uniform.update($('.group-checkable', table));
                             }
 
                             if (tableOptions.onSuccess) {
                                 tableOptions.onSuccess.call(undefined, the, res);
                             }
 
-                            //App.unblockUI(tableContainer);
-
                             return res.data;
                         },
-                        "error": function() { // handle general connection errors
+                        "error": function() {
                             if (tableOptions.onError) {
                                 tableOptions.onError.call(undefined, the);
                             }
-
-                            App.alert({
-                                type: 'danger',
-                                icon: 'warning',
-                                message: tableOptions.dataTable.language.metronicAjaxRequestGeneralError,
-                                container: tableWrapper,
-                                place: 'prepend'
-                            });
-
-                            App.unblockUI(tableContainer);
                         }
                     },
-
-                    "drawCallback": function(oSettings) { // run some code on table redraw
-                        if (tableInitialized === false) { // check if table has been initialized
-                            tableInitialized = true; // set table initialized
-                            table.show(); // display table
+                    "drawCallback": function(oSettings) {
+                        if (tableInitialized === false) {
+                            tableInitialized = true;
+                            table.show();
                         }
-                        //App.initUniform($('input[type="checkbox"]', table)); // reinitialize uniform checkboxes on each table reload
-                        countSelectedRecords(); // reset selected records indicator
-
-                        // callback for ajax data load
+                        countSelectedRecords();
                         if (tableOptions.onDataLoad) {
                             tableOptions.onDataLoad.call(undefined, the);
                         }
@@ -152,56 +117,46 @@ var Datatable = function() {
 
             tableOptions = options;
 
-            // create table's jquery object
             table = $(options.src);
             tableContainer = table.parents(".table-container");
 
-            // apply the special class that used to restyle the default datatable
             var tmp = $.fn.dataTableExt.oStdClasses;
 
             $.fn.dataTableExt.oStdClasses.sWrapper = $.fn.dataTableExt.oStdClasses.sWrapper + " dataTables_extended_wrapper";
             $.fn.dataTableExt.oStdClasses.sFilterInput = "form-control input-xs input-sm input-inline";
             $.fn.dataTableExt.oStdClasses.sLengthSelect = "form-control input-xs input-sm input-inline";
 
-            // initialize a datatable
             dataTable = table.DataTable(options.dataTable);
 
-            // revert back to default
             $.fn.dataTableExt.oStdClasses.sWrapper = tmp.sWrapper;
             $.fn.dataTableExt.oStdClasses.sFilterInput = tmp.sFilterInput;
             $.fn.dataTableExt.oStdClasses.sLengthSelect = tmp.sLengthSelect;
 
-            // get table wrapper
             tableWrapper = table.parents('.dataTables_wrapper');
 
-            // build table group actions panel
             if ($('.table-actions-wrapper', tableContainer).size() === 1) {
-                $('.table-group-actions', tableWrapper).html($('.table-actions-wrapper', tableContainer).html()); // place the panel inside the wrapper
-                $('.table-actions-wrapper', tableContainer).remove(); // remove the template container
+                $('.table-group-actions', tableWrapper).html($('.table-actions-wrapper', tableContainer).html()); 
+                $('.table-actions-wrapper', tableContainer).remove(); 
             }
-            // handle group checkboxes check/uncheck
+
             $('.group-checkable', table).change(function() {
                 var set = table.find('tbody > tr > td:nth-child(1) input[type="checkbox"]');
                 var checked = $(this).prop("checked");
                 $(set).each(function() {
                     $(this).prop("checked", checked);
                 });
-                $.uniform.update(set);
                 countSelectedRecords();
             });
 
-            // handle row's checkbox click
             table.on('change', 'tbody > tr > td:nth-child(1) input[type="checkbox"]', function() {
                 countSelectedRecords();
             });
 
-            // handle filter submit button click
             table.on('click', '.filter-submit', function(e) {
                 e.preventDefault();
                 the.submitFilter();
             });
 
-            // handle filter cancel button click
             table.on('click', '.filter-cancel', function(e) {
                 e.preventDefault();
                 the.resetFilter();
@@ -211,17 +166,14 @@ var Datatable = function() {
         submitFilter: function() {
             the.setAjaxParam("action", tableOptions.filterApplyAction);
 
-            // get all typeable inputs
             $('textarea.form-filter, select.form-filter, input.form-filter:not([type="radio"],[type="checkbox"])', table).each(function() {
                 the.setAjaxParam($(this).attr("name"), $(this).val());
             });
 
-            // get all checkboxes
             $('input.form-filter[type="checkbox"]:checked', table).each(function() {
                 the.addAjaxParam($(this).attr("name"), $(this).val());
             });
 
-            // get all radio buttons
             $('input.form-filter[type="radio"]:checked', table).each(function() {
                 the.setAjaxParam($(this).attr("name"), $(this).val());
             });

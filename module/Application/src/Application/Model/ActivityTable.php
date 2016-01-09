@@ -68,7 +68,7 @@ class ActivityTable
         try {
             $this->tableGateway->delete($where);
         } catch(\Exception $e) {
-            return false;
+            return $e;
         }
         return true;
     }
