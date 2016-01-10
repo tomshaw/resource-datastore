@@ -218,7 +218,7 @@ var Dashboard = function () {
                     }
                 },
                 yaxis: {
-                    ticks: 10,
+                    ticks: 5,
                     tickDecimals: 0,
                     tickColor: "#eee",
                     font: {
@@ -367,7 +367,7 @@ var Dashboard = function () {
                     }
                 },
                 yaxis: {
-                    ticks: 10,
+                    ticks: 5,
                     tickDecimals: 0,
                     tickColor: "#eee",
                     font: {
