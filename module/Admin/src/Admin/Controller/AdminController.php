@@ -43,7 +43,7 @@ class AdminController extends AbstractActionController
 	public function indexAction()
 	{
 	    $this->append();
-
+	    
 	    $vm = new ViewModel();
 	    
 	    $vm->setVariable('activity', $this->getActivityTable()->fetchLatest());
@@ -70,6 +70,7 @@ class AdminController extends AbstractActionController
 	    
 	    $data = array();
 	    $data['top_tags'] = $this->dashboard()->fetchTopTags();
+	    $data['top_days'] = $this->dashboard()->fetchTopDays();
 	    $data['widget_totals'] = $this->dashboard()->fetchWidgetTotals();
 	    $data['yearly_activity'] = $this->dashboard()->yearlyGrowth();
 	    $data['weekly_activity'] = $this->dashboard()->weeklyActivity();

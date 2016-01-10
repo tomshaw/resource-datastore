@@ -103,6 +103,21 @@ class DashboardTable {
                     new Predicate\Expression('DAY(resource.created_at)')
                 );
                 break;
+            case "dayofweek":
+                $columns = array(
+                    new Expression('COUNT(resource.id) AS total'),
+                    new Expression('AVG(resource.id) AS average'),
+                    new Expression('SUM(resource.views) AS views'),
+                    new Predicate\Expression('DAYNAME(resource.created_at) AS dayname'),
+                    new Predicate\Expression('DAYOFWEEK(resource.created_at) AS day')
+                );
+                $group = array(
+                    new Predicate\Expression('DAYOFWEEK(resource.created_at)')
+                );
+                $order = array(
+                    new Predicate\Expression('DAYOFWEEK(resource.created_at)')
+                );
+                break;
             case "week":
                 $columns = array(
                     new Expression('COUNT(resource.id) AS total'),

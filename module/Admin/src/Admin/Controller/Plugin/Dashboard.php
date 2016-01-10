@@ -31,6 +31,16 @@ class Dashboard extends AbstractPlugin
         return $this->dashboardTable;
     }
     
+    public function fetchTopTags()
+    {
+        return $this->getDashboardTable()->fetchTopTags();
+    }
+    
+    public function fetchTopDays()
+    {
+        return $this->getDashboardTable()->fetchAggregate('dayofweek');
+    }
+    
     public function quarterlyGrowth()
     {
         $rows = $this->getDashboardTable()->quarterlyGrowth();
@@ -152,9 +162,5 @@ class Dashboard extends AbstractPlugin
         return $data;
     }
     
-    public function fetchTopTags()
-    {
-        return $this->getDashboardTable()->fetchTopTags();
-    }
     
 }

@@ -42,16 +42,26 @@ var Dashboard = function () {
         });
     }
 
-    var initYearlyActivity = function () {
+    var initTopDays = function () {
 
-        if (typeof (AmCharts) === 'undefined' || $('#yearly_activity').size() === 0) {
+        if (typeof (AmCharts) === 'undefined' || $('#top-days').size() === 0) {
             return;
         }
 
         $('.portlet-loading').hide();
         $('.portlet-content').show();
+        
+        var d = new Date();
+        
+        for (var i = 0, l = dataSets.top_days.length; i < l; i++) {
+        	if (dataSets.top_days[i].day == d.getDay()) {
+        		dataSets.top_days[i].dashLengthLine = 5;
+        		dataSets.top_days[i].alpha = 0.2;
+        		dataSets.top_days[i].additional = dataSets.top_days[i].average;
+        	}
+        }
 
-        var chart = AmCharts.makeChart("yearly_activity", {
+        var chart = AmCharts.makeChart("top-days", {
             "type": "serial",
             "theme": "light",
             "pathToImages": "/vendor/amcharts/dist/amcharts/images/",
@@ -60,39 +70,9 @@ var Dashboard = function () {
             "marginRight": 8,
             "marginTop": 10,
             "marginBottom": 26,
-
             "fontFamily": 'Open Sans',
             "color": '#888',
-
-            "dataProvider": [{
-                "year": 2009,
-                "income": 23.5,
-                "expenses": 18.1
-            }, {
-                "year": 2010,
-                "income": 26.2,
-                "expenses": 22.8
-            }, {
-                "year": 2011,
-                "income": 30.1,
-                "expenses": 23.9
-            }, {
-                "year": 2012,
-                "income": 29.5,
-                "expenses": 25.1
-            }, {
-                "year": 2013,
-                "income": 30.6,
-                "expenses": 27.2,
-                "dashLengthLine": 5
-            }, {
-                "year": 2014,
-                "income": 34.1,
-                "expenses": 29.9,
-                "dashLengthColumn": 5,
-                "alpha": 0.2,
-                "additional": "(projection)"
-            }],
+            "dataProvider": dataSets.top_days,
             "valueAxes": [{
                 "axisAlpha": 0,
                 "position": "left"
@@ -100,14 +80,14 @@ var Dashboard = function () {
             "startDuration": 1,
             "graphs": [{
                 "alphaField": "alpha",
-                "balloonText": "<span style='font-size:13px;'>[[title]] in [[category]]:<b>[[value]]</b> [[additional]]</span>",
+                "balloonText": "<span style='font-size:13px;'>[[title]] [[category]]: <b>[[value]]</b> [[additional]]</span>",
                 "dashLengthField": "dashLengthColumn",
                 "fillAlphas": 1,
-                "title": "Income",
+                "title": "Total",
                 "type": "column",
-                "valueField": "income"
+                "valueField": "total"
             }, {
-                "balloonText": "<span style='font-size:13px;'>[[title]] in [[category]]:<b>[[value]]</b> [[additional]]</span>",
+                "balloonText": "<span style='font-size:13px;'>[[title]] [[category]]: <b>[[value]]</b> [[additional]]</span>",
                 "bullet": "round",
                 "dashLengthField": "dashLengthLine",
                 "lineThickness": 3,
@@ -118,10 +98,10 @@ var Dashboard = function () {
                 "bulletBorderThickness": 3,
                 "fillAlphas": 0,
                 "lineAlpha": 1,
-                "title": "Expenses",
-                "valueField": "expenses"
+                "title": "Views",
+                "valueField": "views"
             }],
-            "categoryField": "year",
+            "categoryField": "dayname",
             "categoryAxis": {
                 "gridPosition": "start",
                 "axisAlpha": 0,
@@ -442,9 +422,9 @@ var Dashboard = function () {
         init: function () {
             initWidgetTotals();
             initTopTags();
+            initTopDays();
             //initMonthlyActivity();
             initWeeklyActivity();
-            initYearlyActivity();
         },
 
         isTouchDevice: function () {
