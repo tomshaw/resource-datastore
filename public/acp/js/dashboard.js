@@ -50,15 +50,15 @@ var Dashboard = function () {
 
         $('.portlet-loading').hide();
         $('.portlet-content').show();
-        
+
         var d = new Date();
-        
+
         for (var i = 0, l = dataSets.top_days.length; i < l; i++) {
-        	if (dataSets.top_days[i].day == d.getDay()) {
-        		dataSets.top_days[i].dashLengthLine = 5;
-        		dataSets.top_days[i].alpha = 0.2;
-        		dataSets.top_days[i].additional = dataSets.top_days[i].average;
-        	}
+            if (dataSets.top_days[i].day == d.getDay()) {
+                dataSets.top_days[i].dashLengthLine = 5;
+                dataSets.top_days[i].alpha = 0.2;
+                dataSets.top_days[i].additional = dataSets.top_days[i].average;
+            }
         }
 
         var chart = AmCharts.makeChart("top-days", {
