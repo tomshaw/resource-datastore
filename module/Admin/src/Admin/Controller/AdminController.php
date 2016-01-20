@@ -72,6 +72,8 @@ class AdminController extends AbstractActionController
 	    $data['top_tags'] = $this->dashboard()->fetchTopTags();
 	    $data['top_days'] = $this->dashboard()->fetchTopDays();
 	    $data['widget_totals'] = $this->dashboard()->fetchWidgetTotals();
+	    
+	    $data['daily_growth'] = $this->dashboard()->dailyGrowth();
 	    $data['yearly_activity'] = $this->dashboard()->yearlyGrowth();
 	    $data['weekly_activity'] = $this->dashboard()->weeklyActivity();
 	
@@ -89,6 +91,10 @@ class AdminController extends AbstractActionController
             ->appendFile('/vendor/Flot/jquery.flot.js')
             ->appendFile('/vendor/Flot/jquery.flot.resize.js')
             ->appendFile('/vendor/Flot/jquery.flot.categories.js')
+            
+            ->appendFile('/vendor/highcharts/highcharts.js')
+            ->appendFile('/vendor/highcharts/highcharts-3d.js')
+            ->appendFile('/vendor/highcharts/highcharts-more.js')
             
             ->appendFile('/vendor/amcharts/dist/amcharts/amcharts.js')
             ->appendFile('/vendor/amcharts/dist/amcharts/themes/light.js')

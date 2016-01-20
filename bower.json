@@ -24,6 +24,7 @@
     "waypoints": "~4.0.0",
     "Chart.js": "~1.0.2",
     "amcharts": "~3.15.2",
-    "morris.js": "~0.5.1"
+    "morris.js": "~0.5.1",
+    "highcharts": "~4.2.1"
   }
 }

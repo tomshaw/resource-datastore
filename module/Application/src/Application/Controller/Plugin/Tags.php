@@ -66,6 +66,10 @@ class Tags extends AbstractPlugin
         for ($i = 0; $i < count($tagArray); $i++) {
             
             $name = $tagArray[$i];
+			
+			if (empty($name)) {
+				continue;
+			}
             
             $result = $tagTable->fetchRow(array('name'=>$name));
             
@@ -86,6 +90,10 @@ class Tags extends AbstractPlugin
         for ($i = 0; $i < count($tagArray); $i++) {
         
             $name = $tagArray[$i];
+			
+			if (empty($name)) {
+				continue;
+			}
         
             $result = $tagTable->fetchRow(array('name'=>$name));
         

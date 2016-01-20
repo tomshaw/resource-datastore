@@ -15,6 +15,7 @@ class Resource
     public $parent_id;
     public $left_id;
     public $right_id;
+    public $created_date;
     public $created_at;
     public $updated_at;
     
@@ -37,6 +38,7 @@ class Resource
         $this->parent_id = (isset($data['parent_id'])) ? $data['parent_id'] : null;
         $this->left_id = (isset($data['left_id'])) ? $data['left_id'] : null;
         $this->right_id = (isset($data['right_id'])) ? $data['right_id'] : null;
+        $this->created_date = (isset($data['created_date'])) ? $data['created_date'] : null;
         $this->created_at = (isset($data['created_at'])) ? $data['created_at'] : null;
         $this->updated_at = (isset($data['updated_at'])) ? $data['updated_at'] : null;
     }

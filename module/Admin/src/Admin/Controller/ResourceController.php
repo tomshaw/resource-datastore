@@ -128,7 +128,7 @@ class ResourceController extends AbstractActionController
     }
     
     public function createAction()
-    {
+    {   
         $parentId = (int) $this->params()->fromRoute('parent_id', false);
         
         $identity = $this->getAuthService()->getIdentity();
@@ -158,6 +158,7 @@ class ResourceController extends AbstractActionController
             }
     
             $now = new \Zend\Db\Sql\Expression('NOW()');
+            $cur = new \Zend\Db\Sql\Expression('CURDATE()');
             
             $insert = array(
                 'title' => $post->title,
@@ -169,6 +170,7 @@ class ResourceController extends AbstractActionController
                 'user_id' => $identity->id,
                 'left_id' => $data['left_id'],
                 'right_id' => $data['right_id'],
+                'created_date' => $cur,
                 'created_at' => $now,
                 'updated_at' => $now
             );

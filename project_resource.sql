@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
+-- version 4.5.3.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 27, 2015 at 05:55 AM
--- Server version: 5.7.9-log
--- PHP Version: 7.0.0
+-- Generation Time: Jan 20, 2016 at 10:14 AM
+-- Server version: 5.7.10-log
+-- PHP Version: 7.0.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -20,6 +20,21 @@ SET time_zone = "+00:00";
 -- Database: `project_resource`
 --
 
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `FillCalendar` (`start_date` DATE, `end_date` DATE)  BEGIN
+    DECLARE crt_date DATE;
+    SET crt_date = start_date;
+    WHILE crt_date <= end_date DO
+        INSERT IGNORE INTO calendar_table VALUES(crt_date);
+        SET crt_date = ADDDATE(crt_date, INTERVAL 1 DAY);
+    END WHILE;
+    END$$
+
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -33,6 +48,16 @@ CREATE TABLE `activity` (
   `icon` varchar(255) NOT NULL,
   `ip_address` int(10) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `calendar_table`
+--
+
+CREATE TABLE `calendar_table` (
+  `calendar_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -53,6 +78,7 @@ CREATE TABLE `resource` (
   `parent_id` int(11) NOT NULL DEFAULT '0',
   `left_id` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `right_id` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `created_date` date DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -128,13 +154,20 @@ ALTER TABLE `activity`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `calendar_table`
+--
+ALTER TABLE `calendar_table`
+  ADD PRIMARY KEY (`calendar_date`);
+
+--
 -- Indexes for table `resource`
 --
 ALTER TABLE `resource`
   ADD PRIMARY KEY (`id`),
   ADD KEY `views` (`views`),
   ADD KEY `nore_status` (`node_status`),
-  ADD KEY `node_type` (`node_type`);
+  ADD KEY `node_type` (`node_type`),
+  ADD KEY `created_date` (`created_date`);
 
 --
 -- Indexes for table `tag`
@@ -170,17 +203,17 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `activity`
 --
 ALTER TABLE `activity`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=138;
 --
 -- AUTO_INCREMENT for table `resource`
 --
 ALTER TABLE `resource`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=167;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=233;
 --
 -- AUTO_INCREMENT for table `tag`
 --
 ALTER TABLE `tag`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 --
 -- AUTO_INCREMENT for table `testing`
 --

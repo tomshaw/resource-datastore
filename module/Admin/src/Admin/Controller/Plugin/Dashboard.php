@@ -41,6 +41,18 @@ class Dashboard extends AbstractPlugin
         return $this->getDashboardTable()->fetchAggregate('dayofweek');
     }
     
+    public function dailyGrowth()
+    {
+        $rows = $this->getDashboardTable()->dailyGrowth();
+    
+        $data = array();
+        foreach ($rows as $row) {
+            $data[] = iterator_to_array($row);
+        }
+    
+        return $data;
+    }
+    
     public function quarterlyGrowth()
     {
         $rows = $this->getDashboardTable()->quarterlyGrowth();

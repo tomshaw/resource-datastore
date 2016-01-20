@@ -408,6 +408,97 @@ var Dashboard = function () {
         drawChart(dataSets);
 
     };
+    
+    var initDailyGrowthLine = function () {
+
+        if (typeof (Highcharts) === 'undefined' || $('#daily-growth').size() === 0) {
+            return;
+        }
+
+        var chartData = dataSets.daily_growth;
+
+        var values = Object.keys(chartData).map(function (key) {
+            return chartData[key];
+        });
+
+        var dataSeries = [];
+        for (var i = 0, l = values.length; i < l; i++) {
+            dataSeries.push([Date.UTC(values[i].year, values[i].month - 1, values[i].day), parseFloat(dataSets.daily_growth[i].total)]);
+        }
+        
+        console.log(dataSeries, 'wretwert');
+
+        $('#daily-growth').highcharts({
+            chart: {
+                zoomType: 'x',
+                style: {
+                    fontFamily: 'Open Sans'
+                }
+            },
+            title: {
+                text: 'Resource daily growth analysis.'
+            },
+            subtitle: {
+                text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+            },
+            xAxis: {
+                type: 'datetime',
+            },
+            yAxis: {
+                title: {
+                    text: 'Total profit amount.'
+                },
+                //min: 0,
+                labels: {
+                    formatter: function () {
+                        return '#' + this.value;
+                    }
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                area: {
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                }
+            },
+            
+            tooltip: {
+                formatter: function () {
+                    return (this.point.y) ? '<b>' + this.series.name + '</b>: #' + this.point.y : '<b>' + this.series.name + '</b>: none.';
+                }
+            },
+
+            series: [{
+                type: 'area',
+                name: 'Count',
+                data: dataSeries
+            }]
+        });
+
+    }
 
     return {
 
@@ -425,6 +516,8 @@ var Dashboard = function () {
             initTopDays();
             //initMonthlyActivity();
             initWeeklyActivity();
+            
+            initDailyGrowthLine();
         },
 
         isTouchDevice: function () {

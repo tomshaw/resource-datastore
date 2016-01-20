@@ -8,7 +8,7 @@ use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Predicate;
 use Zend\Db\Sql\Expression;
-//use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\ResultSet\ResultSet;
 
 use Application\Model\Resource as ResourceModel;
 
@@ -223,6 +223,37 @@ class DashboardTable {
         $statement = $sql->prepareStatementForSqlObject($select);
         
         return iterator_to_array($statement->execute());
+    }
+    
+    public function dailyGrowth()
+    {
+        $subSelect = new \Zend\Db\Sql\Select();
+    
+        $subSelect->from('resource')->columns(array('id','created_date'));
+        $subSelect->where->notEqualTo('node_status', \Application\Model\Resource::NODE_STATUS_DISABLED);
+    
+        $select = new \Zend\Db\Sql\Select();
+    
+        $select->from('calendar_table')->columns(array(
+            '*',
+            new Expression('COUNT(resource.id) AS total'),
+            new Predicate\Expression('YEAR(calendar_table.calendar_date) AS year'),
+            new Predicate\Expression('MONTH(calendar_table.calendar_date) AS month'),
+            new Predicate\Expression('MONTHNAME(calendar_table.calendar_date) AS monthname'),
+            new Predicate\Expression('DAY(calendar_table.calendar_date) AS day')
+        ));
+    
+        $select->join(array('resource' => $subSelect), 'resource.created_date = calendar_table.calendar_date', array(), Select::JOIN_LEFT);
+    
+        $select->group('calendar_date');
+    
+        $statement = $this->getAdapter()->createStatement();
+    
+        $select->prepareStatement($this->getAdapter(), $statement);
+    
+        $resultset = new ResultSet();
+    
+        return iterator_to_array($resultset->initialize($statement->execute()));
     }
    
     protected function dump($var, $message = '')
