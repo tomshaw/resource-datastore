@@ -25,6 +25,31 @@ class DashboardTable {
     {
         return $this->tableGateway->getAdapter();
     }
+	
+    public function autoFillCalendar()
+    {
+        try {
+            $this->getAdapter()->query("CALL CHECK_CALENDAR_DATE(CURDATE());", Adapter::QUERY_MODE_EXECUTE);
+        } catch (\Exception $e) {
+            exit($e->getMessage());
+        }
+    }
+    
+    public function manualFillCalendar()
+    {
+        // Select last day of current year.
+        // $results = $this->getAdapter()->query("SELECT LAST_DAY(DATE_ADD(NOW(), INTERVAL 12-MONTH(NOW()) MONTH));", Adapter::QUERY_MODE_EXECUTE);
+        
+        $results = $this->getAdapter()->query("SELECT COUNT(*) AS count FROM calendar_table WHERE YEAR(calendar_date) = YEAR(CURDATE());", Adapter::QUERY_MODE_EXECUTE);
+        
+        if ($results->current()->count == 0) {
+            try {
+                $this->getAdapter()->query("CALL FillCalendar(DATE_FORMAT(NOW(),'%Y-01-01'), DATE_FORMAT(NOW(),'%Y-12-31'));", Adapter::QUERY_MODE_EXECUTE);
+            } catch (\Exception $e) {
+                exit($e->getMessage());
+            }
+        }
+    }
     
     public function fetchCountResources($nodeType = ResourceModel::NODE_TYPE_CATEGORY)
     {
